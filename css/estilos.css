@@ -1,0 +1,17 @@
+:root {
+    --color-fondo: #eaf1f8;
+    --color-superficie: #ffffff;
+    --color-superficie-suave: #eef4fa;
+    --color-borde: #d3e0ea;
+    --color-texto: #0f1f2e;
+    --color-texto-suave: #4a5f72;
+    --color-primario: #1f6f9e;
+    --color-primario-oscuro: #155879;
+    --color-acento: #f5a623;
+    --color-peligro: #d1495b;
+    --color-exito: #2e9e6b;
+    --sombra: 0 0.25rem 0.75rem #0f1f2e1a;
+    --sombra-fuerte: 0 0.75rem 2rem #0f1f2e33;
+    --radio: 0.75rem;
+    --transicion: 0.25s ease;
+}
