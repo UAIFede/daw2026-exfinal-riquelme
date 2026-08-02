@@ -15,3 +15,300 @@
     --radio: 0.75rem;
     --transicion: 0.25s ease;
 }
+
+body.tema-oscuro {
+    --color-fondo: #0f1a17;
+    --color-superficie: #16241f;
+    --color-superficie-suave: #1d2f28;
+    --color-borde: #2a3d35;
+    --color-texto: #e7efe9;
+    --color-texto-suave: #9fb3aa;
+    --color-primario: #37b48f;
+    --color-primario-oscuro: #2a8f72;
+    --color-peligro: #e06c7c;
+    --sombra: 0 0.25rem 0.75rem #00000059;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    transition: background-color var(--transicion), color var(--transicion);
+}
+
+h1 {
+    font-size: 1.75rem;
+}
+
+h2 {
+    font-size: 1.4rem;
+}
+
+.encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background-color: var(--color-superficie);
+    border-bottom: 1px solid var(--color-borde);
+    box-shadow: var(--sombra);
+}
+
+.marca-sitio {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nombre-sitio {
+    color: var(--color-primario);
+    letter-spacing: 0.02em;
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.acciones-encabezado {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.navegacion {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.enlace-nav {
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    color: var(--color-texto-suave);
+    font-weight: 600;
+    transition: background-color var(--transicion), color var(--transicion);
+}
+
+.enlace-nav:hover,
+.enlace-nav:focus-visible {
+    background-color: var(--color-superficie-suave);
+    color: var(--color-texto);
+}
+
+.enlace-nav-activo {
+    background-color: var(--color-primario);
+    color: #ffffff;
+}
+
+.enlace-nav-activo:hover,
+.enlace-nav-activo:focus-visible {
+    background-color: var(--color-primario-oscuro);
+    color: #ffffff;
+}
+
+.boton-icono {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: var(--color-superficie-suave);
+    transition: background-color var(--transicion), transform var(--transicion);
+}
+
+.boton-icono:hover,
+.boton-icono:focus-visible {
+    background-color: var(--color-borde);
+    transform: translateY(-1px);
+}
+
+.contenido {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.pantalla {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.titulo-pantalla {
+    text-align: center;
+    color: var(--color-texto);
+}
+
+.texto-pantalla {
+    max-width: 34rem;
+    margin: 0.75rem auto 2rem;
+    text-align: center;
+    color: var(--color-texto-suave);
+}
+
+.formulario-inicio {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    padding: 2rem;
+    background-color: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    border: none;
+}
+
+.etiqueta-campo {
+    color: var(--color-texto);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.control-campo {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    background-color: var(--color-superficie-suave);
+    border: 1px solid var(--color-borde);
+    border-radius: 0.5rem;
+    color: var(--color-texto);
+    font-size: 1rem;
+    transition: border-color var(--transicion), box-shadow var(--transicion);
+}
+
+.control-campo:focus-visible {
+    border-color: var(--color-primario);
+    outline: none;
+    box-shadow: 0 0 0 3px #1f6f5c33;
+}
+
+.error-campo {
+    min-height: 1.1rem;
+    color: var(--color-peligro);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.campo-niveles {
+    gap: 0.75rem;
+}
+
+.selector-nivel {
+    display: flex;
+    gap: 0.6rem;
+}
+
+.opcion-nivel {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.75rem 0.5rem;
+    background-color: var(--color-superficie-suave);
+    border: 2px solid var(--color-borde);
+    border-radius: 0.6rem;
+    text-align: center;
+    transition: border-color var(--transicion), background-color var(--transicion);
+}
+
+.opcion-nivel:hover,
+.opcion-nivel:focus-visible {
+    border-color: var(--color-primario);
+}
+
+.opcion-nivel-activa {
+    background-color: #1f6f5c1a;
+    border-color: var(--color-primario);
+}
+
+.nombre-opcion {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.detalle-opcion {
+    color: var(--color-texto-suave);
+    font-size: 0.75rem;
+}
+
+.boton {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.6rem;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: background-color var(--transicion), transform var(--transicion), box-shadow var(--transicion);
+}
+
+.boton:hover,
+.boton:focus-visible {
+    transform: translateY(-2px);
+}
+
+.boton:active {
+    transform: translateY(0);
+}
+
+.boton-primario {
+    background-color: var(--color-primario);
+    color: #ffffff;
+    box-shadow: var(--sombra);
+}
+
+.boton-primario:hover,
+.boton-primario:focus-visible {
+    background-color: var(--color-primario-oscuro);
+}
+
+.boton-fantasma {
+    margin-top: 1rem;
+    background-color: transparent;
+    color: var(--color-primario);
+    font-weight: 600;
+}
+
+.boton-fantasma:hover,
+.boton-fantasma:focus-visible {
+    color: var(--color-primario-oscuro);
+}
+
+.pie {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background-color: var(--color-superficie);
+    border-top: 1px solid var(--color-borde);
+    text-align: center;
+    color: var(--color-texto-suave);
+}
+
+.enlaces-pie {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.enlace-pie {
+    color: var(--color-primario);
+    text-decoration: underline;
+    font-weight: 600;
+}

@@ -4,16 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>memoJuego - Escudos de clubes argentinos</title>
+    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-    <header>
+    <header class="encabezado">
+        <div class="marca-sitio">
+            <span class="nombre-sitio">memoJuego</span>
+        </div>
+        <nav class="navegacion" aria-label="Navegación principal">
+            <a class="enlace-nav enlace-nav-activo" href="index.html">Juego</a>
+            <a class="enlace-nav" href="pages/contacto.html">Contacto</a>
+        </nav>
+        <div class="acciones-encabezado">
+            <button class="boton-icono" id="boton-tema" type="button" aria-label="Cambiar entre modo claro y oscuro">
+                <img class="icono-boton" src="assets/imagenes/luna.svg" alt="" aria-hidden="true">
+            </button>
+            <button class="boton-icono" id="boton-sonido" type="button" aria-label="Activar o desactivar sonidos">
+                <img class="icono-boton" src="assets/imagenes/sound-on.svg" alt="" aria-hidden="true">
+            </button>
+        </div>
     </header>
 
-    <main>
+    <main class="contenido">
+        <section class="pantalla vista-inicio" id="pantalla-inicio" aria-labelledby="titulo-inicio">
+            <h1 class="titulo-pantalla" id="titulo-inicio">Encontrá todos los pares</h1>
+            <p class="texto-pantalla">Dado vuelta un tablero de escudos de clubes de fútbol argentino. Emparejá las cartas iguales en el menor tiempo y con la menor cantidad de errores posible.</p>
+
+            <form class="formulario-inicio" id="formulario-inicio" novalidate>
+                <div class="campo">
+                    <label class="etiqueta-campo" for="entrada-nombre">Tu nombre</label>
+                    <input class="control-campo" id="entrada-nombre" type="text" placeholder="Mínimo 3 caracteres" autocomplete="off" maxlength="20">
+                    <p class="error-campo" id="error-nombre" role="alert"></p>
+                </div>
+
+                <fieldset class="campo campo-niveles">
+                    <legend class="etiqueta-campo">Nivel de dificultad</legend>
+                    <div class="selector-nivel" id="selector-nivel" role="radiogroup" aria-label="Nivel de dificultad">
+                        <button class="opcion-nivel opcion-nivel-activa" type="button" data-nivel="facil" role="radio" aria-checked="true">
+                            <span class="nombre-opcion">Fácil</span>
+                            <span class="detalle-opcion">4 x 4 · 8 pares</span>
+                        </button>
+                        <button class="opcion-nivel" type="button" data-nivel="medio" role="radio" aria-checked="false">
+                            <span class="nombre-opcion">Medio</span>
+                            <span class="detalle-opcion">4 x 5 · 10 pares</span>
+                        </button>
+                        <button class="opcion-nivel" type="button" data-nivel="dificil" role="radio" aria-checked="false">
+                            <span class="nombre-opcion">Difícil</span>
+                            <span class="detalle-opcion">6 x 6 · 18 pares</span>
+                        </button>
+                    </div>
+                </fieldset>
+
+                <button class="boton boton-primario" id="boton-comenzar" type="submit">Comenzar partida</button>
+            </form>
+
+            <button class="boton boton-fantasma" id="boton-ranking-inicio" type="button">Ver ranking</button>
+        </section>
     </main>
 
-    <footer>
+    <footer class="pie">
+        <p class="texto-pie">Proyecto Final · Desarrollo y Arquitecturas Web · 2026</p>
+        <div class="enlaces-pie">
+            <a class="enlace-pie" id="enlace-repositorio" href="#" target="_blank" rel="noopener noreferrer">Repositorio en GitHub</a>
+            <a class="enlace-pie" id="enlace-pages" href="#" target="_blank" rel="noopener noreferrer">Ver en GitHub Pages</a>
+        </div>
     </footer>
 </body>
 </html>
