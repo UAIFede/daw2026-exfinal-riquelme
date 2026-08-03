@@ -6,6 +6,7 @@ var selectorNivel = null;
 var selectOrdenRanking = null;
 var temaActual = 'claro';
 var botonTema = null;
+var botonSonido = null;
 
 function iniciarAplicacion() {
     inicializarInterfaz();
@@ -19,6 +20,7 @@ function obtenerReferencias() {
     selectorNivel = document.getElementById('selector-nivel');
     selectOrdenRanking = document.getElementById('orden-ranking');
     botonTema = document.getElementById('boton-tema');
+    botonSonido = document.getElementById('boton-sonido');
 }
 
 function conectarEventos() {
@@ -38,6 +40,7 @@ function conectarEventos() {
     entradaNombre.addEventListener('input', limpiarErrorNombre);
     selectOrdenRanking.addEventListener('change', manejarCambioOrden);
     botonTema.addEventListener('click', manejarClickTema);
+    botonSonido.addEventListener('click', manejarClickSonido);
 }
 
 function manejarEnvioInicio(evento) {
@@ -135,6 +138,7 @@ function manejarClickCancelarBorrado() {
 
 function aplicarPreferenciasGuardadas() {
     var temaGuardado;
+    var sonidoGuardado;
 
     temaGuardado = leerPreferenciaTema();
     if (temaGuardado === 'oscuro') {
@@ -142,6 +146,13 @@ function aplicarPreferenciasGuardadas() {
     }
     aplicarTema(temaActual);
     actualizarIconoTema();
+
+    sonidoGuardado = leerPreferenciaSonido();
+    if (sonidoGuardado === 'inactivo') {
+        actualizarBotonSonido(false);
+    } else {
+        actualizarBotonSonido(true);
+    }
 }
 
 
@@ -165,6 +176,16 @@ function actualizarIconoTema() {
         glifo.src = IMAGEN_TEMA_CLARO;
     } else {
         glifo.src = IMAGEN_TEMA_OSCURO;
+    }
+}
+
+function manejarClickSonido() {
+    if (sonidoActivo === true) {
+        actualizarBotonSonido(false);
+        guardarPreferenciaSonido('inactivo');
+    } else {
+        actualizarBotonSonido(true);
+        guardarPreferenciaSonido('activo');
     }
 }
 

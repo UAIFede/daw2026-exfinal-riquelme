@@ -7,6 +7,8 @@ var RUTA_ESCUDOS = RUTA_IMAGENES + 'equipos/';
 var IMAGEN_DORSO = RUTA_IMAGENES + 'pelota_carta.svg';
 var IMAGEN_TEMA_CLARO = RUTA_IMAGENES + 'sol.svg';
 var IMAGEN_TEMA_OSCURO = RUTA_IMAGENES + 'luna.svg';
+var IMAGEN_SONIDO_ACTIVO = RUTA_IMAGENES + 'sound-on.svg';
+var IMAGEN_SONIDO_INACTIVO = RUTA_IMAGENES + 'sound-off.svg';
 var sonidoActivo = true;
 
 var RUTA_SONIDOS = 'assets/sonidos/';
@@ -35,6 +37,7 @@ function inicializarInterfaz() {
     elementos.modalRanking = document.getElementById('modal-ranking');
     elementos.rankingTabla = document.getElementById('ranking-tabla');
     elementos.modalConfirmacion = document.getElementById('modal-confirmacion');
+    elementos.botonSonido = document.getElementById('boton-sonido');
 }
 
 function mostrarErrorNombre(mensaje) {
@@ -393,4 +396,20 @@ function reproducirSonido(tipo) {
     sonido = SONIDOS[tipo];
     sonido.currentTime = 0;
     sonido.play();
+}
+
+function actualizarBotonSonido(activo) {
+    var glifo;
+
+    sonidoActivo = activo;
+    if (elementos.botonSonido === undefined || elementos.botonSonido === null) {
+        return;
+    }
+
+    glifo = elementos.botonSonido.querySelector('.icono-boton');
+    if (activo === true) {
+        glifo.src = IMAGEN_SONIDO_ACTIVO;
+    } else {
+        glifo.src = IMAGEN_SONIDO_INACTIVO;
+    }
 }
