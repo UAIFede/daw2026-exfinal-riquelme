@@ -29,6 +29,7 @@ body.tema-oscuro {
     --color-exito: #4cc38a;
     --color-acento: #f5b544;
     --sombra: 0 0.25rem 0.75rem #00000059;
+    --sombra-fuerte: 0 0.75rem 2rem #00000080;
 }
 
 body {
@@ -512,4 +513,108 @@ body.tema-oscuro .icono-boton {
 
 body.tema-oscuro .icono-modal-mono {
     filter: invert(1);
+}
+
+.carta.esta-volteada .interior-carta,
+.carta.es-correcta .interior-carta {
+    transform: rotateY(180deg);
+}
+
+.carta.es-correcta .cara-frente {
+    border-color: var(--color-exito);
+    background-color: #2e9e6b1a;
+}
+
+.carta.es-incorrecta .cara-frente {
+    border-color: var(--color-peligro);
+    background-color: #d1495b1a;
+    animation: temblar 0.35s ease;
+}
+
+@keyframes temblar {
+    25% {
+        transform: rotateY(180deg) translateX(-0.25rem);
+    }
+
+    75% {
+        transform: rotateY(180deg) translateX(0.25rem);
+    }
+}
+
+.modal {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    background-color: #14231dcc;
+}
+
+.caja-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 26rem;
+    padding: 2rem;
+    background-color: var(--color-superficie);
+    border-radius: var(--radio);
+    text-align: center;
+    box-shadow: var(--sombra-fuerte);
+    animation: aparecer 0.25s ease;
+}
+
+.titulo-modal {
+    color: var(--color-texto);
+}
+
+.subtitulo-modal {
+    color: var(--color-texto-suave);
+}
+
+.acciones-modal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.detalle-puntaje {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--color-superficie-suave);
+    border-radius: 0.6rem;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.fila-puntaje {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.fila-puntaje-total {
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--color-borde);
+    font-weight: 700;
+}
+
+@keyframes aparecer {
+    from {
+        transform: translateY(0.75rem);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }

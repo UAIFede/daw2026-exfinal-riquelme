@@ -1,5 +1,17 @@
 'use strict';
 
+var PUNTOS_POR_PAR = 100;
+var BONUS_RACHA = 20;
+var PENALIZACION_ERROR_EXTRA = 5;
+var BONUS_FINALIZACION = 300;
+var PENALIZACION_POR_SEGUNDO = 1;
+
+var PENALIZACION_ERROR = {
+    facil: 10,
+    medio: 20,
+    dificil: 30
+};
+
 var PARES_POR_NIVEL = {
     facil: 8,
     medio: 10,
@@ -71,7 +83,14 @@ var estadoJuego = {
     intentos: 0,
     errores: 0,
     paresEncontrados: 0,
-    puntaje: 0
+    puntaje: 0,
+    rachaActual: 0,
+    erroresSeguidos: 0,
+    bonusRachaTotal: 0,
+    penalizacionErroresTotal: 0,
+    segundos: 0,
+    temporizador: null,
+    temporizadorIniciado: false
 };
 
 function reiniciarEstado(nombre, nivel) {
@@ -86,12 +105,19 @@ function reiniciarEstado(nombre, nivel) {
     estadoJuego.errores = 0;
     estadoJuego.paresEncontrados = 0;
     estadoJuego.puntaje = 0;
+    estadoJuego.rachaActual = 0;
+    estadoJuego.erroresSeguidos = 0;
+    estadoJuego.bonusRachaTotal = 0;
+    estadoJuego.penalizacionErroresTotal = 0;
+    estadoJuego.segundos = 0;
+    estadoJuego.temporizadorIniciado = false;
 }
 
 function iniciarPartida(nombre, nivel) {
     reiniciarEstado(nombre, nivel);
     renderizarTablero(estadoJuego.cartas, nivel);
     actualizarMarcador(estadoJuego);
+    actualizarTiempo(0);
     mostrarPantallaJuego();
 }
 
@@ -110,6 +136,7 @@ function seleccionarCarta(indice) {
         return;
     }
 
+    iniciarTemporizador();
     voltearCarta(indice, carta.nombre);
 
     if (estadoJuego.primeraCarta === null) {
@@ -138,22 +165,48 @@ function verificarPar() {
 }
 
 function procesarAcierto() {
+    var bonus;
+
     estadoJuego.cartas[estadoJuego.primeraCarta].emparejada = true;
     estadoJuego.cartas[estadoJuego.segundaCarta].emparejada = true;
     marcarCorrecta(estadoJuego.primeraCarta);
     marcarCorrecta(estadoJuego.segundaCarta);
 
     estadoJuego.paresEncontrados = estadoJuego.paresEncontrados + 1;
+    estadoJuego.rachaActual = estadoJuego.rachaActual + 1;
+    estadoJuego.erroresSeguidos = 0;
+
+    if (estadoJuego.rachaActual >= 2) {
+        bonus = (estadoJuego.rachaActual - 1) * BONUS_RACHA;
+        estadoJuego.bonusRachaTotal = estadoJuego.bonusRachaTotal + bonus;
+    }
+
+    estadoJuego.puntaje = calcularPuntajeParcial();
     estadoJuego.primeraCarta = null;
     estadoJuego.segundaCarta = null;
     estadoJuego.tableroBloqueado = false;
     actualizarMarcador(estadoJuego);
+
+    if (estadoJuego.paresEncontrados === estadoJuego.totalPares) {
+        finalizarPartida();
+    }
 }
 
 function procesarError() {
+    var penalizacion;
+
     estadoJuego.errores = estadoJuego.errores + 1;
+    estadoJuego.rachaActual = 0;
+    estadoJuego.erroresSeguidos = estadoJuego.erroresSeguidos + 1;
+
+    penalizacion = PENALIZACION_ERROR[estadoJuego.nivel] +
+        ((estadoJuego.erroresSeguidos - 1) * PENALIZACION_ERROR_EXTRA);
+    estadoJuego.penalizacionErroresTotal = estadoJuego.penalizacionErroresTotal + penalizacion;
+
     marcarIncorrecta(estadoJuego.primeraCarta);
     marcarIncorrecta(estadoJuego.segundaCarta);
+
+    estadoJuego.puntaje = calcularPuntajeParcial();
     actualizarMarcador(estadoJuego);
 
     window.setTimeout(ocultarCartasNoCoincidentes, 900);
@@ -165,4 +218,103 @@ function ocultarCartasNoCoincidentes() {
     estadoJuego.primeraCarta = null;
     estadoJuego.segundaCarta = null;
     estadoJuego.tableroBloqueado = false;
+}
+
+function tictac() {
+    estadoJuego.segundos = estadoJuego.segundos + 1;
+    actualizarTiempo(estadoJuego.segundos);
+}
+
+function iniciarTemporizador() {
+    if (estadoJuego.temporizadorIniciado === true) {
+        return;
+    }
+
+    estadoJuego.temporizadorIniciado = true;
+    estadoJuego.temporizador = window.setInterval(tictac, 1000);
+}
+
+function detenerTemporizador() {
+    if (estadoJuego.temporizador !== null) {
+        window.clearInterval(estadoJuego.temporizador);
+        estadoJuego.temporizador = null;
+    }
+}
+
+function calcularPuntajeParcial() {
+    var puntaje;
+
+    puntaje = (estadoJuego.paresEncontrados * PUNTOS_POR_PAR) +
+        estadoJuego.bonusRachaTotal -
+        estadoJuego.penalizacionErroresTotal;
+
+    if (puntaje < 0) {
+        return 0;
+    }
+
+    return puntaje;
+}
+
+function calcularPenalizacionTiempo() {
+    return estadoJuego.segundos * PENALIZACION_POR_SEGUNDO;
+}
+
+function calcularPuntajeFinal() {
+    var puntaje;
+
+    puntaje = (estadoJuego.totalPares * PUNTOS_POR_PAR) +
+        estadoJuego.bonusRachaTotal +
+        BONUS_FINALIZACION -
+        estadoJuego.penalizacionErroresTotal -
+        calcularPenalizacionTiempo();
+
+    if (puntaje < 0) {
+        return 0;
+    }
+
+    return puntaje;
+}
+
+function armarDatosVictoria() {
+    return {
+        nombreJugador: estadoJuego.nombreJugador,
+        nivel: estadoJuego.nivel,
+        segundos: estadoJuego.segundos,
+        intentos: estadoJuego.intentos,
+        errores: estadoJuego.errores,
+        totalPares: estadoJuego.totalPares,
+        bonusRacha: estadoJuego.bonusRachaTotal,
+        bonusFinalizacion: BONUS_FINALIZACION,
+        penalizacionErrores: estadoJuego.penalizacionErroresTotal,
+        penalizacionTiempo: calcularPenalizacionTiempo(),
+        puntaje: estadoJuego.puntaje
+    };
+}
+
+function finalizarPartida() {
+    detenerTemporizador();
+    estadoJuego.puntaje = calcularPuntajeFinal();
+    actualizarMarcador(estadoJuego);
+    guardarResultado(armarResultado());
+    mostrarModalVictoria(armarDatosVictoria());
+}
+
+function reiniciarPartida() {
+    detenerTemporizador();
+    reiniciarEstado(estadoJuego.nombreJugador, estadoJuego.nivel);
+    renderizarTablero(estadoJuego.cartas, estadoJuego.nivel);
+    actualizarMarcador(estadoJuego);
+    actualizarTiempo(0);
+}
+
+function armarResultado() {
+    return {
+        nombre: estadoJuego.nombreJugador,
+        puntaje: estadoJuego.puntaje,
+        nivel: estadoJuego.nivel,
+        intentos: estadoJuego.intentos,
+        errores: estadoJuego.errores,
+        marcaTiempo: Date.now(),
+        duracionSegundos: estadoJuego.segundos
+    };
 }
