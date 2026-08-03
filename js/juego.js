@@ -1,5 +1,13 @@
 'use strict';
 
+var PUNTOS_POR_PAR = 100;
+
+var PENALIZACION_ERROR = {
+    facil: 10,
+    medio: 20,
+    dificil: 30
+};
+
 var PARES_POR_NIVEL = {
     facil: 8,
     medio: 10,
@@ -151,6 +159,7 @@ function procesarAcierto() {
     marcarCorrecta(estadoJuego.segundaCarta);
 
     estadoJuego.paresEncontrados = estadoJuego.paresEncontrados + 1;
+    estadoJuego.puntaje = calcularPuntajeParcial();
     estadoJuego.primeraCarta = null;
     estadoJuego.segundaCarta = null;
     estadoJuego.tableroBloqueado = false;
@@ -193,4 +202,8 @@ function detenerTemporizador() {
         window.clearInterval(estadoJuego.temporizador);
         estadoJuego.temporizador = null;
     }
+}
+
+function calcularPuntajeParcial() {
+    return estadoJuego.paresEncontrados * PUNTOS_POR_PAR;
 }
