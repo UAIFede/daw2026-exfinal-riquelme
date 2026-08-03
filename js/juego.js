@@ -299,6 +299,7 @@ function finalizarPartida() {
 }
 
 function reiniciarPartida() {
+    detenerTemporizador();
     reiniciarEstado(estadoJuego.nombreJugador, estadoJuego.nivel);
     renderizarTablero(estadoJuego.cartas, estadoJuego.nivel);
     actualizarMarcador(estadoJuego);
