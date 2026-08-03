@@ -16,6 +16,7 @@ function inicializarInterfaz() {
     elementos.datoIntentos = document.getElementById('dato-intentos');
     elementos.datoErrores = document.getElementById('dato-errores');
     elementos.errorNombre = document.getElementById('error-nombre');
+    elementos.datoTiempo = document.getElementById('dato-tiempo');
 }
 
 function mostrarErrorNombre(mensaje) {
@@ -123,4 +124,26 @@ function actualizarMarcador(estado) {
     elementos.datoPares.textContent = estado.paresEncontrados + ' / ' + estado.totalPares;
     elementos.datoIntentos.textContent = estado.intentos;
     elementos.datoErrores.textContent = estado.errores;
+}
+
+function actualizarTiempo(segundos) {
+    elementos.datoTiempo.textContent = formatearTiempo(segundos);
+}
+
+function formatearTiempo(segundos) {
+    var minutos;
+    var resto;
+
+    minutos = Math.floor(segundos / 60);
+    resto = segundos % 60;
+
+    return rellenarDosDigitos(minutos) + ':' + rellenarDosDigitos(resto);
+}
+
+function rellenarDosDigitos(numero) {
+    if (numero < 10) {
+        return '0' + numero;
+    }
+
+    return '' + numero;
 }

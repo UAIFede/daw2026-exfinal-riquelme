@@ -71,7 +71,10 @@ var estadoJuego = {
     intentos: 0,
     errores: 0,
     paresEncontrados: 0,
-    puntaje: 0
+    puntaje: 0,
+    segundos: 0,
+    temporizador: null,
+    temporizadorIniciado: false
 };
 
 function reiniciarEstado(nombre, nivel) {
@@ -86,12 +89,15 @@ function reiniciarEstado(nombre, nivel) {
     estadoJuego.errores = 0;
     estadoJuego.paresEncontrados = 0;
     estadoJuego.puntaje = 0;
+    estadoJuego.segundos = 0;
+    estadoJuego.temporizadorIniciado = false;
 }
 
 function iniciarPartida(nombre, nivel) {
     reiniciarEstado(nombre, nivel);
     renderizarTablero(estadoJuego.cartas, nivel);
     actualizarMarcador(estadoJuego);
+    actualizarTiempo(0);
     mostrarPantallaJuego();
 }
 
@@ -110,6 +116,7 @@ function seleccionarCarta(indice) {
         return;
     }
 
+    iniciarTemporizador();
     voltearCarta(indice, carta.nombre);
 
     if (estadoJuego.primeraCarta === null) {
@@ -165,4 +172,25 @@ function ocultarCartasNoCoincidentes() {
     estadoJuego.primeraCarta = null;
     estadoJuego.segundaCarta = null;
     estadoJuego.tableroBloqueado = false;
+}
+
+function tictac() {
+    estadoJuego.segundos = estadoJuego.segundos + 1;
+    actualizarTiempo(estadoJuego.segundos);
+}
+
+function iniciarTemporizador() {
+    if (estadoJuego.temporizadorIniciado === true) {
+        return;
+    }
+
+    estadoJuego.temporizadorIniciado = true;
+    estadoJuego.temporizador = window.setInterval(tictac, 1000);
+}
+
+function detenerTemporizador() {
+    if (estadoJuego.temporizador !== null) {
+        window.clearInterval(estadoJuego.temporizador);
+        estadoJuego.temporizador = null;
+    }
 }
