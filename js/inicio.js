@@ -21,6 +21,7 @@ function manejarEnvioInicio(evento) {
     var nombre;
     var resultado;
 
+    evento.preventDefault();
     nombre = entradaNombre.value;
     resultado = validarNombreJugador(nombre);
 
