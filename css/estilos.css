@@ -17,17 +17,17 @@
 }
 
 body.tema-oscuro {
-    --color-fondo: #0f1a17;
-    --color-superficie: #16241f;
-    --color-superficie-suave: #1d2f28;
-    --color-borde: #2a3d35;
-    --color-texto: #e7efe9;
-    --color-texto-suave: #9fb3aa;
-    --color-primario: #37b48f;
-    --color-primario-oscuro: #2a8f72;
+    --color-fondo: #0b1622;
+    --color-superficie: #13212e;
+    --color-superficie-suave: #1a2c3d;
+    --color-borde: #2a3f52;
+    --color-texto: #e7eef5;
+    --color-texto-suave: #9db0c2;
+    --color-primario: #2f7fb0;
+    --color-primario-oscuro: #23628a;
+    --color-acento: #f5b544;
     --color-peligro: #e06c7c;
     --color-exito: #4cc38a;
-    --color-acento: #f5b544;
     --sombra: 0 0.25rem 0.75rem #00000059;
     --sombra-fuerte: 0 0.75rem 2rem #00000080;
 }
@@ -196,7 +196,7 @@ h2 {
 .control-campo:focus-visible {
     border-color: var(--color-primario);
     outline: none;
-    box-shadow: 0 0 0 3px #1f6f5c33;
+    box-shadow: 0 0 0 3px #1f6f9e33;
 }
 
 .error-campo {
@@ -234,7 +234,7 @@ h2 {
 }
 
 .opcion-nivel-activa {
-    background-color: #1f6f5c1a;
+    background-color: #1f6f9e1a;
     border-color: var(--color-primario);
 }
 
@@ -458,7 +458,7 @@ h2 {
 }
 
 .cara-dorso {
-    background: linear-gradient(135deg, #1f6f5c, #2a8f72);
+    background: linear-gradient(135deg, #1f6f9e, #2f8fc4);
     box-shadow: var(--sombra);
 }
 
@@ -549,7 +549,7 @@ body.tema-oscuro .icono-modal-mono {
     justify-content: center;
     align-items: center;
     padding: 1.5rem;
-    background-color: #14231dcc;
+    background-color: #0f1f2ecc;
 }
 
 .caja-modal {
