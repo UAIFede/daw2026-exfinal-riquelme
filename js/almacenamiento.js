@@ -1,6 +1,7 @@
 'use strict';
 
 var CLAVE_RANKING = 'memojuego-ranking';
+var CLAVE_TEMA = 'memojuego-tema';
 
 function leerRanking() {
     var crudo;
@@ -34,4 +35,12 @@ function guardarResultado(resultado) {
 
 function borrarRanking() {
     localStorage.removeItem(CLAVE_RANKING);
+}
+
+function leerPreferenciaTema() {
+    return localStorage.getItem(CLAVE_TEMA);
+}
+
+function guardarPreferenciaTema(tema) {
+    localStorage.setItem(CLAVE_TEMA, tema);
 }

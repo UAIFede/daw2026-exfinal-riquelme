@@ -4,10 +4,13 @@ var entradaNombre = null;
 var nivelSeleccionado = 'facil';
 var selectorNivel = null;
 var selectOrdenRanking = null;
+var temaActual = 'claro';
+var botonTema = null;
 
 function iniciarAplicacion() {
     inicializarInterfaz();
     obtenerReferencias();
+    aplicarPreferenciasGuardadas();
     conectarEventos();
 }
 
@@ -15,6 +18,7 @@ function obtenerReferencias() {
     entradaNombre = document.getElementById('entrada-nombre');
     selectorNivel = document.getElementById('selector-nivel');
     selectOrdenRanking = document.getElementById('orden-ranking');
+    botonTema = document.getElementById('boton-tema');
 }
 
 function conectarEventos() {
@@ -33,6 +37,7 @@ function conectarEventos() {
     selectorNivel.addEventListener('click', manejarClickNivel);
     entradaNombre.addEventListener('input', limpiarErrorNombre);
     selectOrdenRanking.addEventListener('change', manejarCambioOrden);
+    botonTema.addEventListener('click', manejarClickTema);
 }
 
 function manejarEnvioInicio(evento) {
@@ -126,6 +131,41 @@ function manejarClickConfirmarBorrado() {
 
 function manejarClickCancelarBorrado() {
     ocultarModalConfirmacion();
+}
+
+function aplicarPreferenciasGuardadas() {
+    var temaGuardado;
+
+    temaGuardado = leerPreferenciaTema();
+    if (temaGuardado === 'oscuro') {
+        temaActual = 'oscuro';
+    }
+    aplicarTema(temaActual);
+    actualizarIconoTema();
+}
+
+
+function manejarClickTema() {
+    if (temaActual === 'oscuro') {
+        temaActual = 'claro';
+    } else {
+        temaActual = 'oscuro';
+    }
+
+    aplicarTema(temaActual);
+    guardarPreferenciaTema(temaActual);
+    actualizarIconoTema();
+}
+
+function actualizarIconoTema() {
+    var glifo;
+
+    glifo = botonTema.querySelector('.icono-boton');
+    if (temaActual === 'oscuro') {
+        glifo.src = IMAGEN_TEMA_CLARO;
+    } else {
+        glifo.src = IMAGEN_TEMA_OSCURO;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', iniciarAplicacion);

@@ -5,6 +5,8 @@ var elementosCarta = [];
 var RUTA_IMAGENES = 'assets/imagenes/';
 var RUTA_ESCUDOS = RUTA_IMAGENES + 'equipos/';
 var IMAGEN_DORSO = RUTA_IMAGENES + 'pelota_carta.svg';
+var IMAGEN_TEMA_CLARO = RUTA_IMAGENES + 'sol.svg';
+var IMAGEN_TEMA_OSCURO = RUTA_IMAGENES + 'luna.svg';
 
 function inicializarInterfaz() {
     elementos.pantallaInicio = document.getElementById('pantalla-inicio');
@@ -361,4 +363,12 @@ function mostrarModalConfirmacion() {
 
 function ocultarModalConfirmacion() {
     elementos.modalConfirmacion.classList.add('oculto');
+}
+
+function aplicarTema(tema) {
+    if (tema === 'oscuro') {
+        document.body.classList.add('tema-oscuro');
+    } else {
+        document.body.classList.remove('tema-oscuro');
+    }
 }
