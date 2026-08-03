@@ -5,6 +5,8 @@ var elementosCarta = [];
 var RUTA_IMAGENES = 'assets/imagenes/';
 var RUTA_ESCUDOS = RUTA_IMAGENES + 'equipos/';
 var IMAGEN_DORSO = RUTA_IMAGENES + 'pelota_carta.svg';
+var IMAGEN_TEMA_CLARO = RUTA_IMAGENES + 'sol.svg';
+var IMAGEN_TEMA_OSCURO = RUTA_IMAGENES + 'luna.svg';
 
 function inicializarInterfaz() {
     elementos.pantallaInicio = document.getElementById('pantalla-inicio');
@@ -20,6 +22,9 @@ function inicializarInterfaz() {
     elementos.modalVictoria = document.getElementById('modal-victoria');
     elementos.resumenVictoria = document.getElementById('resumen-victoria');
     elementos.detallePuntaje = document.getElementById('detalle-puntaje');
+    elementos.modalRanking = document.getElementById('modal-ranking');
+    elementos.rankingTabla = document.getElementById('ranking-tabla');
+    elementos.modalConfirmacion = document.getElementById('modal-confirmacion');
 }
 
 function mostrarErrorNombre(mensaje) {
@@ -210,4 +215,160 @@ function ocultarModalVictoria() {
 function mostrarPantallaInicio() {
     elementos.pantallaJuego.classList.add('oculto');
     elementos.pantallaInicio.classList.remove('oculto');
+}
+
+function formatearFecha(marcaTiempo) {
+    var fecha;
+
+    fecha = new Date(marcaTiempo);
+
+    return rellenarDosDigitos(fecha.getDate()) + '/' +
+        rellenarDosDigitos(fecha.getMonth() + 1) + '/' +
+        fecha.getFullYear() + ' ' +
+        rellenarDosDigitos(fecha.getHours()) + ':' +
+        rellenarDosDigitos(fecha.getMinutes());
+}
+
+function comparadorPuntaje(a, b) {
+    return b.puntaje - a.puntaje;
+}
+
+function comparadorFecha(a, b) {
+    return b.marcaTiempo - a.marcaTiempo;
+}
+
+function comparadorDuracion(a, b) {
+    return a.duracionSegundos - b.duracionSegundos;
+}
+
+function comparadorNivel(a, b) {
+    var pesoA;
+    var pesoB;
+    var diferencia;
+
+    if (a.nivel === 'dificil') {
+        pesoA = 3;
+    } else if (a.nivel === 'medio') {
+        pesoA = 2;
+    } else {
+        pesoA = 1;
+    }
+
+    if (b.nivel === 'dificil') {
+        pesoB = 3;
+    } else if (b.nivel === 'medio') {
+        pesoB = 2;
+    } else {
+        pesoB = 1;
+    }
+
+    diferencia = pesoB - pesoA;
+    if (diferencia !== 0) {
+        return diferencia;
+    }
+
+    return b.puntaje - a.puntaje;
+}
+
+function ordenarRanking(lista, criterio) {
+    var copia;
+
+    copia = lista.slice();
+    if (criterio === 'fecha') {
+        copia.sort(comparadorFecha);
+    } else if (criterio === 'duracion') {
+        copia.sort(comparadorDuracion);
+    } else if (criterio === 'nivel') {
+        copia.sort(comparadorNivel);
+    } else {
+        copia.sort(comparadorPuntaje);
+    }
+
+    return copia;
+}
+
+function crearFilaRanking(resultado, posicion) {
+    var fila;
+    var nodoPosicion;
+    var nodoDatos;
+    var nodoNombre;
+    var nodoMeta;
+    var nodoPuntaje;
+
+    fila = document.createElement('div');
+    fila.className = 'ranking-fila';
+
+    nodoPosicion = document.createElement('span');
+    nodoPosicion.className = 'posicion-fila';
+    nodoPosicion.textContent = posicion;
+
+    nodoDatos = document.createElement('div');
+    nodoDatos.className = 'datos-fila';
+
+    nodoNombre = document.createElement('span');
+    nodoNombre.className = 'nombre-fila';
+    nodoNombre.textContent = resultado.nombre;
+
+    nodoMeta = document.createElement('span');
+    nodoMeta.className = 'meta-fila';
+    nodoMeta.textContent = nombrarNivel(resultado.nivel) + ' · ' +
+        formatearTiempo(resultado.duracionSegundos) + ' · ' +
+        formatearFecha(resultado.marcaTiempo);
+
+    nodoPuntaje = document.createElement('span');
+    nodoPuntaje.className = 'puntaje-fila';
+    nodoPuntaje.textContent = resultado.puntaje;
+
+    nodoDatos.appendChild(nodoNombre);
+    nodoDatos.appendChild(nodoMeta);
+    fila.appendChild(nodoPosicion);
+    fila.appendChild(nodoDatos);
+    fila.appendChild(nodoPuntaje);
+
+    return fila;
+}
+
+function renderizarRanking(lista, criterio) {
+    var ordenada;
+    var indice;
+    var vacio;
+
+    elementos.rankingTabla.textContent = '';
+
+    if (lista.length === 0) {
+        vacio = document.createElement('p');
+        vacio.className = 'ranking-vacio';
+        vacio.textContent = 'Todavía no hay partidas guardadas. ¡Jugá una para aparecer acá!';
+        elementos.rankingTabla.appendChild(vacio);
+        return;
+    }
+
+    ordenada = ordenarRanking(lista, criterio);
+    for (indice = 0; indice < ordenada.length; indice = indice + 1) {
+        elementos.rankingTabla.appendChild(crearFilaRanking(ordenada[indice], indice + 1));
+    }
+}
+
+function mostrarModalRanking() {
+    elementos.modalRanking.classList.remove('oculto');
+}
+
+function ocultarModalRanking() {
+    elementos.modalRanking.classList.add('oculto');
+}
+
+function mostrarModalConfirmacion() {
+    elementos.modalConfirmacion.classList.remove('oculto');
+}
+
+function ocultarModalConfirmacion() {
+    elementos.modalConfirmacion.classList.add('oculto');
+}
+
+function aplicarTema(tema) {
+    if (tema === 'oscuro') {
+        document.body.classList.add('tema-oscuro');
+    } else {
+        document.body.classList.remove('tema-oscuro');
+    }
 }

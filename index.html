@@ -122,6 +122,36 @@
             </div>
         </div>
     </div>
+    <div class="modal oculto" id="modal-ranking" role="dialog" aria-modal="true" aria-labelledby="titulo-ranking">
+        <div class="caja-modal caja-modal-ancha">
+            <h2 class="titulo-modal" id="titulo-ranking">Ranking de partidas</h2>
+            <div class="ranking-controles">
+                <label class="etiqueta-campo" for="orden-ranking">Ordenar por</label>
+                <select class="control-campo control-campo-select" id="orden-ranking">
+                    <option value="puntaje">Puntaje</option>
+                    <option value="fecha">Fecha</option>
+                    <option value="duracion">Duración</option>
+                    <option value="nivel">Nivel</option>
+                </select>
+            </div>
+            <div class="ranking-tabla" id="ranking-tabla"></div>
+            <div class="acciones-modal">
+                <button class="boton boton-secundario" id="boton-borrar-ranking" type="button">Borrar historial</button>
+                <button class="boton boton-fantasma" id="boton-cerrar-ranking" type="button">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal oculto" id="modal-confirmacion" role="dialog" aria-modal="true" aria-labelledby="titulo-confirmacion">
+        <div class="caja-modal">
+            <img class="icono-modal icono-modal-mono" src="assets/imagenes/basura.svg" alt="" aria-hidden="true">
+            <h2 class="titulo-modal" id="titulo-confirmacion">Borrar historial</h2>
+            <p class="subtitulo-modal">Se van a eliminar todas las partidas guardadas. Esta acción no se puede deshacer.</p>
+            <div class="acciones-modal">
+                <button class="boton boton-peligro" id="boton-confirmar-borrado" type="button">Sí, borrar todo</button>
+                <button class="boton boton-fantasma" id="boton-cancelar-borrado" type="button">Cancelar</button>
+            </div>
+        </div>
+    </div>
     <script src="js/validaciones.js"></script>
     <script src="js/interfaz.js"></script>
     <script src="js/inicio.js"></script>

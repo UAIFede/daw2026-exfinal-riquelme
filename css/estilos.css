@@ -618,3 +618,84 @@ body.tema-oscuro .icono-modal-mono {
         opacity: 1;
     }
 }
+
+.caja-modal-ancha {
+    max-width: 34rem;
+}
+
+.control-campo-select {
+    cursor: pointer;
+}
+
+.ranking-controles {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+}
+
+.ranking-controles .etiqueta-campo {
+    margin: 0;
+}
+
+.ranking-controles .control-campo-select {
+    width: auto;
+    flex: 1;
+}
+
+.ranking-tabla {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 100%;
+    max-height: 18rem;
+    overflow-y: auto;
+}
+
+.ranking-fila {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    background-color: var(--color-superficie-suave);
+    border-radius: 0.5rem;
+    text-align: left;
+}
+
+.posicion-fila {
+    color: var(--color-primario);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.datos-fila {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.nombre-fila {
+    font-weight: 700;
+}
+
+.meta-fila {
+    color: var(--color-texto-suave);
+    font-size: 0.8rem;
+}
+
+.puntaje-fila {
+    color: var(--color-texto);
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.ranking-vacio {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--color-texto-suave);
+}
+
+.boton-peligro {
+    background-color: var(--color-peligro);
+    color: #ffffff;
+}
