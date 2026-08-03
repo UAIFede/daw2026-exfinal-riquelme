@@ -80,8 +80,8 @@ function abrirClienteCorreo(nombre, mail, mensaje) {
     var cuerpo;
     var enlace;
 
-    asunto = 'Consulta desde memoJuego';
-    cuerpo = 'Nombre: ' + nombre + '\nMail: ' + mail + '\n\n' + mensaje;
+    asunto = encodeURIComponent('Consulta desde memoJuego');
+    cuerpo = encodeURIComponent('Nombre: ' + nombre + '\nMail: ' + mail + '\n\n' + mensaje);
     enlace = 'mailto:' + MAIL_DESTINO + '?subject=' + asunto + '&body=' + cuerpo;
 
     window.location.href = enlace;
