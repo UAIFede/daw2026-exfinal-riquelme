@@ -27,6 +27,7 @@ body.tema-oscuro {
     --color-primario-oscuro: #2a8f72;
     --color-peligro: #e06c7c;
     --color-exito: #4cc38a;
+    --color-acento: #f5b544;
     --sombra: 0 0.25rem 0.75rem #00000059;
 }
 
@@ -422,4 +423,93 @@ h2 {
     border: 0;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
+}
+
+.carta {
+    display: block;
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background: transparent;
+    border-radius: 0.6rem;
+    perspective: 60rem;
+}
+
+.carta:focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 2px;
+}
+
+.interior-carta {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.4s ease;
+    transform-style: preserve-3d;
+}
+
+.cara-carta {
+    display: flex;
+    position: absolute;
+    inset: 0;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.6rem;
+    backface-visibility: hidden;
+}
+
+.cara-dorso {
+    background: linear-gradient(135deg, #1f6f5c, #2a8f72);
+    box-shadow: var(--sombra);
+}
+
+.cara-frente {
+    background-color: var(--color-superficie);
+    border: 2px solid var(--color-borde);
+    box-shadow: var(--sombra);
+    transform: rotateY(180deg);
+}
+
+.tablero-facil .carta {
+    flex: 0 0 calc((100% - 1.5rem) / 4);
+}
+
+.tablero-medio .carta {
+    flex: 0 0 calc((100% - 2rem) / 5);
+}
+
+.tablero-dificil .carta {
+    flex: 0 0 calc((100% - 2.5rem) / 6);
+}
+
+.carta:disabled {
+    cursor: default;
+}
+
+.icono-boton {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+body.tema-oscuro .icono-boton {
+    filter: invert(1);
+}
+
+.cara-dorso img {
+    width: 45%;
+    height: 45%;
+    object-fit: contain;
+}
+
+.imagen-carta {
+    width: 65%;
+    height: 65%;
+    object-fit: contain;
+}
+
+.icono-modal {
+    width: 3rem;
+    height: 3rem;
+}
+
+body.tema-oscuro .icono-modal-mono {
+    filter: invert(1);
 }
