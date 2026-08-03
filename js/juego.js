@@ -138,6 +138,7 @@ function seleccionarCarta(indice) {
 
     iniciarTemporizador();
     voltearCarta(indice, carta.nombre);
+    reproducirSonido('voltear');
 
     if (estadoJuego.primeraCarta === null) {
         estadoJuego.primeraCarta = indice;
@@ -171,6 +172,7 @@ function procesarAcierto() {
     estadoJuego.cartas[estadoJuego.segundaCarta].emparejada = true;
     marcarCorrecta(estadoJuego.primeraCarta);
     marcarCorrecta(estadoJuego.segundaCarta);
+    reproducirSonido('acierto');
 
     estadoJuego.paresEncontrados = estadoJuego.paresEncontrados + 1;
     estadoJuego.rachaActual = estadoJuego.rachaActual + 1;
@@ -205,6 +207,7 @@ function procesarError() {
 
     marcarIncorrecta(estadoJuego.primeraCarta);
     marcarIncorrecta(estadoJuego.segundaCarta);
+    reproducirSonido('error');
 
     estadoJuego.puntaje = calcularPuntajeParcial();
     actualizarMarcador(estadoJuego);
@@ -296,6 +299,7 @@ function finalizarPartida() {
     estadoJuego.puntaje = calcularPuntajeFinal();
     actualizarMarcador(estadoJuego);
     guardarResultado(armarResultado());
+    reproducirSonido('victoria');
     mostrarModalVictoria(armarDatosVictoria());
 }
 

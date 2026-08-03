@@ -8,9 +8,14 @@ var errorNombre = null;
 var errorMail = null;
 var errorMensaje = null;
 var mensajeExito = null;
+var IMAGEN_TEMA_CLARO = '../assets/imagenes/sol.svg';
+var IMAGEN_TEMA_OSCURO = '../assets/imagenes/luna.svg';
+var botonTemaContacto = null;
+var temaActualContacto = 'claro';
 
 function iniciarContacto() {
     obtenerReferenciasContacto();
+    aplicarTemaContacto();
     conectarEventosContacto();
 }
 
@@ -22,6 +27,7 @@ function obtenerReferenciasContacto() {
     errorMail = document.getElementById('error-contacto-mail');
     errorMensaje = document.getElementById('error-contacto-mensaje');
     mensajeExito = document.getElementById('exito-contacto');
+    botonTemaContacto = document.getElementById('boton-tema');
 }
 
 function conectarEventosContacto() {
@@ -29,6 +35,7 @@ function conectarEventosContacto() {
     entradaNombre.addEventListener('input', limpiarErroresContacto);
     entradaMail.addEventListener('input', limpiarErroresContacto);
     entradaMensaje.addEventListener('input', limpiarErroresContacto);
+    botonTemaContacto.addEventListener('click', manejarClickTemaContacto);
 }
 
 function limpiarErroresContacto() {
@@ -85,6 +92,42 @@ function abrirClienteCorreo(nombre, mail, mensaje) {
     enlace = 'mailto:' + MAIL_DESTINO + '?subject=' + asunto + '&body=' + cuerpo;
 
     window.location.href = enlace;
+}
+
+function aplicarTemaContacto() {
+    var glifo;
+
+    if (leerPreferenciaTema() === 'oscuro') {
+        temaActualContacto = 'oscuro';
+        document.body.classList.add('tema-oscuro');
+    }
+
+    glifo = botonTemaContacto.querySelector('.icono-boton');
+    if (temaActualContacto === 'oscuro') {
+        glifo.src = IMAGEN_TEMA_CLARO;
+    } else {
+        glifo.src = IMAGEN_TEMA_OSCURO;
+    }
+}
+
+function manejarClickTemaContacto() {
+    var glifo;
+
+    if (temaActualContacto === 'oscuro') {
+        temaActualContacto = 'claro';
+        document.body.classList.remove('tema-oscuro');
+    } else {
+        temaActualContacto = 'oscuro';
+        document.body.classList.add('tema-oscuro');
+    }
+
+    guardarPreferenciaTema(temaActualContacto);
+    glifo = botonTemaContacto.querySelector('.icono-boton');
+    if (temaActualContacto === 'oscuro') {
+        glifo.src = IMAGEN_TEMA_CLARO;
+    } else {
+        glifo.src = IMAGEN_TEMA_OSCURO;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', iniciarContacto);
