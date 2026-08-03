@@ -694,3 +694,8 @@ body.tema-oscuro .icono-modal-mono {
     text-align: center;
     color: var(--color-texto-suave);
 }
+
+.boton-peligro {
+    background-color: var(--color-peligro);
+    color: #ffffff;
+}

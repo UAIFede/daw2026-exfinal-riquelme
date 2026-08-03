@@ -3,6 +3,7 @@
 var entradaNombre = null;
 var nivelSeleccionado = 'facil';
 var selectorNivel = null;
+var selectOrdenRanking = null;
 
 function iniciarAplicacion() {
     inicializarInterfaz();
@@ -13,6 +14,7 @@ function iniciarAplicacion() {
 function obtenerReferencias() {
     entradaNombre = document.getElementById('entrada-nombre');
     selectorNivel = document.getElementById('selector-nivel');
+    selectOrdenRanking = document.getElementById('orden-ranking');
 }
 
 function conectarEventos() {
@@ -21,8 +23,13 @@ function conectarEventos() {
     document.getElementById('boton-jugar-otra').addEventListener('click', manejarClickJugarOtra);
     document.getElementById('boton-reiniciar').addEventListener('click', manejarClickReiniciar);
     document.getElementById('boton-nueva').addEventListener('click', manejarClickNueva);
+    document.getElementById('boton-ranking-inicio').addEventListener('click', manejarClickAbrirRanking);
+    document.getElementById('boton-ranking-juego').addEventListener('click', manejarClickAbrirRanking);
+    document.getElementById('boton-ver-ranking-victoria').addEventListener('click', manejarClickAbrirRanking);
+    document.getElementById('boton-cerrar-ranking').addEventListener('click', manejarClickCerrarRanking);
     selectorNivel.addEventListener('click', manejarClickNivel);
     entradaNombre.addEventListener('input', limpiarErrorNombre);
+    selectOrdenRanking.addEventListener('change', manejarCambioOrden);
 }
 
 function manejarEnvioInicio(evento) {
@@ -89,6 +96,19 @@ function manejarClickReiniciar() {
 function manejarClickNueva() {
     detenerTemporizador();
     mostrarPantallaInicio();
+}
+
+function manejarClickAbrirRanking() {
+    renderizarRanking(leerRanking(), selectOrdenRanking.value);
+    mostrarModalRanking();
+}
+
+function manejarClickCerrarRanking() {
+    ocultarModalRanking();
+}
+
+function manejarCambioOrden() {
+    renderizarRanking(leerRanking(), selectOrdenRanking.value);
 }
 
 document.addEventListener('DOMContentLoaded', iniciarAplicacion);
