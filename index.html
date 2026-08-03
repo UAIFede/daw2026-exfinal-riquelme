@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>memoJuego - Escudos de clubes argentinos</title>
-    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
@@ -60,6 +59,47 @@
             </form>
 
             <button class="boton boton-fantasma" id="boton-ranking-inicio" type="button">Ver ranking</button>
+        </section>
+
+        <section class="pantalla vista-juego oculto" id="pantalla-juego" aria-labelledby="titulo-juego">
+            <h2 class="visualmente-oculto" id="titulo-juego">Partida en curso</h2>
+
+            <div class="tablero-superior">
+                <ul class="marcador" aria-live="polite">
+                    <li class="item-marcador">
+                        <span class="etiqueta-marcador">Jugador</span>
+                        <span class="valor-marcador" id="dato-jugador">-</span>
+                    </li>
+                    <li class="item-marcador">
+                        <span class="etiqueta-marcador">Tiempo</span>
+                        <span class="valor-marcador" id="dato-tiempo">00:00</span>
+                    </li>
+                    <li class="item-marcador">
+                        <span class="etiqueta-marcador">Puntaje</span>
+                        <span class="valor-marcador" id="dato-puntaje">0</span>
+                    </li>
+                    <li class="item-marcador">
+                        <span class="etiqueta-marcador">Pares</span>
+                        <span class="valor-marcador" id="dato-pares">0 / 0</span>
+                    </li>
+                    <li class="item-marcador">
+                        <span class="etiqueta-marcador">Intentos</span>
+                        <span class="valor-marcador" id="dato-intentos">0</span>
+                    </li>
+                    <li class="item-marcador">
+                        <span class="etiqueta-marcador">Errores</span>
+                        <span class="valor-marcador" id="dato-errores">0</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tablero tablero-facil" id="tablero" aria-label="Tablero de cartas"></div>
+
+            <div class="controles-juego">
+                <button class="boton boton-secundario" id="boton-reiniciar" type="button">Reiniciar partida</button>
+                <button class="boton boton-fantasma" id="boton-nueva" type="button">Cambiar jugador o nivel</button>
+                <button class="boton boton-fantasma" id="boton-ranking-juego" type="button">Ver ranking</button>
+            </div>
         </section>
     </main>
 
