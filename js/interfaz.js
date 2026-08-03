@@ -22,6 +22,7 @@ function inicializarInterfaz() {
     elementos.detallePuntaje = document.getElementById('detalle-puntaje');
     elementos.modalRanking = document.getElementById('modal-ranking');
     elementos.rankingTabla = document.getElementById('ranking-tabla');
+    elementos.modalConfirmacion = document.getElementById('modal-confirmacion');
 }
 
 function mostrarErrorNombre(mensaje) {
@@ -352,4 +353,12 @@ function mostrarModalRanking() {
 
 function ocultarModalRanking() {
     elementos.modalRanking.classList.add('oculto');
+}
+
+function mostrarModalConfirmacion() {
+    elementos.modalConfirmacion.classList.remove('oculto');
+}
+
+function ocultarModalConfirmacion() {
+    elementos.modalConfirmacion.classList.add('oculto');
 }

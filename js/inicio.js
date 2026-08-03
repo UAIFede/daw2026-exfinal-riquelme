@@ -27,6 +27,9 @@ function conectarEventos() {
     document.getElementById('boton-ranking-juego').addEventListener('click', manejarClickAbrirRanking);
     document.getElementById('boton-ver-ranking-victoria').addEventListener('click', manejarClickAbrirRanking);
     document.getElementById('boton-cerrar-ranking').addEventListener('click', manejarClickCerrarRanking);
+    document.getElementById('boton-borrar-ranking').addEventListener('click', manejarClickBorrar);
+    document.getElementById('boton-confirmar-borrado').addEventListener('click', manejarClickConfirmarBorrado);
+    document.getElementById('boton-cancelar-borrado').addEventListener('click', manejarClickCancelarBorrado);
     selectorNivel.addEventListener('click', manejarClickNivel);
     entradaNombre.addEventListener('input', limpiarErrorNombre);
     selectOrdenRanking.addEventListener('change', manejarCambioOrden);
@@ -109,6 +112,20 @@ function manejarClickCerrarRanking() {
 
 function manejarCambioOrden() {
     renderizarRanking(leerRanking(), selectOrdenRanking.value);
+}
+
+function manejarClickBorrar() {
+    mostrarModalConfirmacion();
+}
+
+function manejarClickConfirmarBorrado() {
+    borrarRanking();
+    ocultarModalConfirmacion();
+    renderizarRanking(leerRanking(), selectOrdenRanking.value);
+}
+
+function manejarClickCancelarBorrado() {
+    ocultarModalConfirmacion();
 }
 
 document.addEventListener('DOMContentLoaded', iniciarAplicacion);
