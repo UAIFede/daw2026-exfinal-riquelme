@@ -513,3 +513,29 @@ body.tema-oscuro .icono-boton {
 body.tema-oscuro .icono-modal-mono {
     filter: invert(1);
 }
+
+.carta.esta-volteada .interior-carta,
+.carta.es-correcta .interior-carta {
+    transform: rotateY(180deg);
+}
+
+.carta.es-correcta .cara-frente {
+    border-color: var(--color-exito);
+    background-color: #2e9e6b1a;
+}
+
+.carta.es-incorrecta .cara-frente {
+    border-color: var(--color-peligro);
+    background-color: #d1495b1a;
+    animation: temblar 0.35s ease;
+}
+
+@keyframes temblar {
+    25% {
+        transform: rotateY(180deg) translateX(-0.25rem);
+    }
+
+    75% {
+        transform: rotateY(180deg) translateX(0.25rem);
+    }
+}
