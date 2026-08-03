@@ -295,6 +295,7 @@ function finalizarPartida() {
     detenerTemporizador();
     estadoJuego.puntaje = calcularPuntajeFinal();
     actualizarMarcador(estadoJuego);
+    guardarResultado(armarResultado());
     mostrarModalVictoria(armarDatosVictoria());
 }
 
@@ -304,4 +305,16 @@ function reiniciarPartida() {
     renderizarTablero(estadoJuego.cartas, estadoJuego.nivel);
     actualizarMarcador(estadoJuego);
     actualizarTiempo(0);
+}
+
+function armarResultado() {
+    return {
+        nombre: estadoJuego.nombreJugador,
+        puntaje: estadoJuego.puntaje,
+        nivel: estadoJuego.nivel,
+        intentos: estadoJuego.intentos,
+        errores: estadoJuego.errores,
+        marcaTiempo: Date.now(),
+        duracionSegundos: estadoJuego.segundos
+    };
 }
