@@ -483,3 +483,33 @@ h2 {
 .carta:disabled {
     cursor: default;
 }
+
+.icono-boton {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+body.tema-oscuro .icono-boton {
+    filter: invert(1);
+}
+
+.cara-dorso img {
+    width: 45%;
+    height: 45%;
+    object-fit: contain;
+}
+
+.imagen-carta {
+    width: 65%;
+    height: 65%;
+    object-fit: contain;
+}
+
+.icono-modal {
+    width: 3rem;
+    height: 3rem;
+}
+
+body.tema-oscuro .icono-modal-mono {
+    filter: invert(1);
+}
