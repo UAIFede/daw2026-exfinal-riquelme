@@ -1,10 +1,10 @@
 'use strict';
 
-var entradaNombre = null;
 var nivelSeleccionado = 'facil';
+var temaActual = 'claro';
+var entradaNombre = null;
 var selectorNivel = null;
 var selectOrdenRanking = null;
-var temaActual = 'claro';
 var botonTema = null;
 var botonSonido = null;
 
@@ -23,22 +23,41 @@ function obtenerReferencias() {
     botonSonido = document.getElementById('boton-sonido');
 }
 
+function aplicarPreferenciasGuardadas() {
+    var temaGuardado;
+    var sonidoGuardado;
+
+    temaGuardado = leerPreferenciaTema();
+    if (temaGuardado === 'oscuro') {
+        temaActual = 'oscuro';
+    }
+    aplicarTema(temaActual);
+    actualizarIconoTema();
+
+    sonidoGuardado = leerPreferenciaSonido();
+    if (sonidoGuardado === 'inactivo') {
+        actualizarBotonSonido(false);
+    } else {
+        actualizarBotonSonido(true);
+    }
+}
+
 function conectarEventos() {
     document.getElementById('formulario-inicio').addEventListener('submit', manejarEnvioInicio);
+    selectorNivel.addEventListener('click', manejarClickNivel);
+    entradaNombre.addEventListener('input', limpiarErrorNombre);
     document.getElementById('tablero').addEventListener('click', manejarClickTablero);
-    document.getElementById('boton-jugar-otra').addEventListener('click', manejarClickJugarOtra);
     document.getElementById('boton-reiniciar').addEventListener('click', manejarClickReiniciar);
     document.getElementById('boton-nueva').addEventListener('click', manejarClickNueva);
     document.getElementById('boton-ranking-inicio').addEventListener('click', manejarClickAbrirRanking);
     document.getElementById('boton-ranking-juego').addEventListener('click', manejarClickAbrirRanking);
     document.getElementById('boton-ver-ranking-victoria').addEventListener('click', manejarClickAbrirRanking);
     document.getElementById('boton-cerrar-ranking').addEventListener('click', manejarClickCerrarRanking);
+    selectOrdenRanking.addEventListener('change', manejarCambioOrden);
     document.getElementById('boton-borrar-ranking').addEventListener('click', manejarClickBorrar);
     document.getElementById('boton-confirmar-borrado').addEventListener('click', manejarClickConfirmarBorrado);
     document.getElementById('boton-cancelar-borrado').addEventListener('click', manejarClickCancelarBorrado);
-    selectorNivel.addEventListener('click', manejarClickNivel);
-    entradaNombre.addEventListener('input', limpiarErrorNombre);
-    selectOrdenRanking.addEventListener('change', manejarCambioOrden);
+    document.getElementById('boton-jugar-otra').addEventListener('click', manejarClickJugarOtra);
     botonTema.addEventListener('click', manejarClickTema);
     botonSonido.addEventListener('click', manejarClickSonido);
 }
@@ -95,11 +114,6 @@ function manejarClickTablero(evento) {
     seleccionarCarta(indice);
 }
 
-function manejarClickJugarOtra() {
-    ocultarModalVictoria();
-    reiniciarPartida();
-}
-
 function manejarClickReiniciar() {
     reiniciarPartida();
 }
@@ -136,25 +150,10 @@ function manejarClickCancelarBorrado() {
     ocultarModalConfirmacion();
 }
 
-function aplicarPreferenciasGuardadas() {
-    var temaGuardado;
-    var sonidoGuardado;
-
-    temaGuardado = leerPreferenciaTema();
-    if (temaGuardado === 'oscuro') {
-        temaActual = 'oscuro';
-    }
-    aplicarTema(temaActual);
-    actualizarIconoTema();
-
-    sonidoGuardado = leerPreferenciaSonido();
-    if (sonidoGuardado === 'inactivo') {
-        actualizarBotonSonido(false);
-    } else {
-        actualizarBotonSonido(true);
-    }
+function manejarClickJugarOtra() {
+    ocultarModalVictoria();
+    reiniciarPartida();
 }
-
 
 function manejarClickTema() {
     if (temaActual === 'oscuro') {

@@ -29,14 +29,12 @@
         <section class="pantalla vista-inicio" id="pantalla-inicio" aria-labelledby="titulo-inicio">
             <h1 class="titulo-pantalla" id="titulo-inicio">Encontrá todos los pares</h1>
             <p class="texto-pantalla">Dado vuelta un tablero de escudos de clubes de fútbol argentino. Emparejá las cartas iguales en el menor tiempo y con la menor cantidad de errores posible.</p>
-
             <form class="formulario-inicio" id="formulario-inicio" novalidate>
                 <div class="campo">
                     <label class="etiqueta-campo" for="entrada-nombre">Tu nombre</label>
                     <input class="control-campo" id="entrada-nombre" type="text" placeholder="Mínimo 3 caracteres" autocomplete="off" maxlength="20">
                     <p class="error-campo" id="error-nombre" role="alert"></p>
                 </div>
-
                 <fieldset class="campo campo-niveles">
                     <legend class="etiqueta-campo">Nivel de dificultad</legend>
                     <div class="selector-nivel" id="selector-nivel" role="radiogroup" aria-label="Nivel de dificultad">
@@ -54,16 +52,13 @@
                         </button>
                     </div>
                 </fieldset>
-
                 <button class="boton boton-primario" id="boton-comenzar" type="submit">Comenzar partida</button>
             </form>
-
             <button class="boton boton-fantasma" id="boton-ranking-inicio" type="button">Ver ranking</button>
         </section>
 
         <section class="pantalla vista-juego oculto" id="pantalla-juego" aria-labelledby="titulo-juego">
             <h2 class="visualmente-oculto" id="titulo-juego">Partida en curso</h2>
-
             <div class="tablero-superior">
                 <ul class="marcador" aria-live="polite">
                     <li class="item-marcador">
@@ -92,9 +87,7 @@
                     </li>
                 </ul>
             </div>
-
             <div class="tablero tablero-facil" id="tablero" aria-label="Tablero de cartas"></div>
-
             <div class="controles-juego">
                 <button class="boton boton-secundario" id="boton-reiniciar" type="button">Reiniciar partida</button>
                 <button class="boton boton-fantasma" id="boton-nueva" type="button">Cambiar jugador o nivel</button>
@@ -110,6 +103,7 @@
             <a class="enlace-pie" id="enlace-pages" href="https://uaifede.github.io/daw2026-exfinal-riquelme/" target="_blank" rel="noopener noreferrer">Ver en GitHub Pages</a>
         </div>
     </footer>
+
     <div class="modal oculto" id="modal-victoria" role="dialog" aria-modal="true" aria-labelledby="titulo-victoria">
         <div class="caja-modal">
             <img class="icono-modal" src="assets/imagenes/ganador.svg" alt="" aria-hidden="true">
@@ -122,6 +116,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal oculto" id="modal-ranking" role="dialog" aria-modal="true" aria-labelledby="titulo-ranking">
         <div class="caja-modal caja-modal-ancha">
             <h2 class="titulo-modal" id="titulo-ranking">Ranking de partidas</h2>
@@ -141,6 +136,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal oculto" id="modal-confirmacion" role="dialog" aria-modal="true" aria-labelledby="titulo-confirmacion">
         <div class="caja-modal">
             <img class="icono-modal icono-modal-mono" src="assets/imagenes/basura.svg" alt="" aria-hidden="true">
@@ -152,10 +148,11 @@
             </div>
         </div>
     </div>
+  
+    <script src="js/almacenamiento.js"></script>
     <script src="js/validaciones.js"></script>
     <script src="js/interfaz.js"></script>
-    <script src="js/inicio.js"></script>
     <script src="js/juego.js"></script>
-    <script src="js/almacenamiento.js"></script>
+    <script src="js/inicio.js"></script>
 </body>
 </html>

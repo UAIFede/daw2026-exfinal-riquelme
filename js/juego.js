@@ -1,10 +1,10 @@
 'use strict';
 
 var PUNTOS_POR_PAR = 100;
-var BONUS_RACHA = 20;
-var PENALIZACION_ERROR_EXTRA = 5;
 var BONUS_FINALIZACION = 300;
+var BONUS_RACHA = 20;
 var PENALIZACION_POR_SEGUNDO = 1;
+var PENALIZACION_ERROR_EXTRA = 5;
 
 var PENALIZACION_ERROR = {
     facil: 10,
@@ -19,25 +19,46 @@ var PARES_POR_NIVEL = {
 };
 
 var SIMBOLOS = [
+    { archivo: 'argentinos_jrs.svg', nombre: 'Argentinos Juniors' },
+    { archivo: 'banfield.svg', nombre: 'Banfield' },
+    { archivo: 'belgrano.svg', nombre: 'Belgrano' },
     { archivo: 'boca_jrs.svg', nombre: 'Boca Juniors' },
-    { archivo: 'river_plate.svg', nombre: 'River Plate' },
-    { archivo: 'independiente.svg', nombre: 'Independiente' },
-    { archivo: 'racing.svg', nombre: 'Racing Club' },
-    { archivo: 'san_lorenzo.svg', nombre: 'San Lorenzo' },
-    { archivo: 'huracan.svg', nombre: 'Huracán' },
-    { archivo: 'velez.svg', nombre: 'Vélez Sarsfield' },
+    { archivo: 'defensa.svg', nombre: 'Defensa y Justicia' },
     { archivo: 'estudiantes.svg', nombre: 'Estudiantes de La Plata' },
     { archivo: 'gimnasia.svg', nombre: 'Gimnasia y Esgrima La Plata' },
-    { archivo: 'rosario_central.svg', nombre: 'Rosario Central' },
-    { archivo: 'newells.svg', nombre: 'Newell\'s Old Boys' },
-    { archivo: 'talleres.svg', nombre: 'Talleres' },
-    { archivo: 'belgrano.svg', nombre: 'Belgrano' },
+    { archivo: 'huracan.svg', nombre: 'Huracán' },
+    { archivo: 'independiente.svg', nombre: 'Independiente' },
     { archivo: 'lanus.svg', nombre: 'Lanús' },
-    { archivo: 'banfield.svg', nombre: 'Banfield' },
+    { archivo: 'newells.svg', nombre: 'Newell\'s Old Boys' },
+    { archivo: 'racing.svg', nombre: 'Racing Club' },
+    { archivo: 'river_plate.svg', nombre: 'River Plate' },
+    { archivo: 'rosario_central.svg', nombre: 'Rosario Central' },
+    { archivo: 'san_lorenzo.svg', nombre: 'San Lorenzo' },
+    { archivo: 'talleres.svg', nombre: 'Talleres' },
     { archivo: 'tigre.svg', nombre: 'Tigre' },
-    { archivo: 'defensa.svg', nombre: 'Defensa y Justicia' },
-    { archivo: 'argentinos_jrs.svg', nombre: 'Argentinos Juniors' }
+    { archivo: 'velez.svg', nombre: 'Vélez Sarsfield' }
 ];
+
+var estadoJuego = {
+    nombreJugador: '',
+    nivel: 'facil',
+    cartas: [],
+    totalPares: 0,
+    primeraCarta: null,
+    segundaCarta: null,
+    tableroBloqueado: false,
+    intentos: 0,
+    errores: 0,
+    paresEncontrados: 0,
+    puntaje: 0,
+    rachaActual: 0,
+    erroresSeguidos: 0,
+    bonusRachaTotal: 0,
+    penalizacionErroresTotal: 0,
+    segundos: 0,
+    temporizador: null,
+    temporizadorIniciado: false
+};
 
 function mezclarArreglo(arreglo) {
     var indice;
@@ -72,27 +93,6 @@ function crearCartas(nivel) {
     return mezclarArreglo(cartas);
 }
 
-var estadoJuego = {
-    nombreJugador: '',
-    nivel: 'facil',
-    cartas: [],
-    totalPares: 0,
-    primeraCarta: null,
-    segundaCarta: null,
-    tableroBloqueado: false,
-    intentos: 0,
-    errores: 0,
-    paresEncontrados: 0,
-    puntaje: 0,
-    rachaActual: 0,
-    erroresSeguidos: 0,
-    bonusRachaTotal: 0,
-    penalizacionErroresTotal: 0,
-    segundos: 0,
-    temporizador: null,
-    temporizadorIniciado: false
-};
-
 function reiniciarEstado(nombre, nivel) {
     estadoJuego.nombreJugador = nombre;
     estadoJuego.nivel = nivel;
@@ -114,11 +114,55 @@ function reiniciarEstado(nombre, nivel) {
 }
 
 function iniciarPartida(nombre, nivel) {
+    detenerTemporizador();
     reiniciarEstado(nombre, nivel);
     renderizarTablero(estadoJuego.cartas, nivel);
     actualizarMarcador(estadoJuego);
     actualizarTiempo(0);
     mostrarPantallaJuego();
+}
+
+function reiniciarPartida() {
+    detenerTemporizador();
+    reiniciarEstado(estadoJuego.nombreJugador, estadoJuego.nivel);
+    renderizarTablero(estadoJuego.cartas, estadoJuego.nivel);
+    actualizarMarcador(estadoJuego);
+    actualizarTiempo(0);
+}
+
+function tictac() {
+    estadoJuego.segundos = estadoJuego.segundos + 1;
+    actualizarTiempo(estadoJuego.segundos);
+}
+
+function iniciarTemporizador() {
+    if (estadoJuego.temporizadorIniciado === true) {
+        return;
+    }
+
+    estadoJuego.temporizadorIniciado = true;
+    estadoJuego.temporizador = window.setInterval(tictac, 1000);
+}
+
+function detenerTemporizador() {
+    if (estadoJuego.temporizador !== null) {
+        window.clearInterval(estadoJuego.temporizador);
+        estadoJuego.temporizador = null;
+    }
+}
+
+function calcularPuntajeParcial() {
+    var puntaje;
+
+    puntaje = (estadoJuego.paresEncontrados * PUNTOS_POR_PAR) +
+        estadoJuego.bonusRachaTotal -
+        estadoJuego.penalizacionErroresTotal;
+
+    if (puntaje < 0) {
+        return 0;
+    }
+
+    return puntaje;
 }
 
 function seleccionarCarta(indice) {
@@ -223,41 +267,6 @@ function ocultarCartasNoCoincidentes() {
     estadoJuego.tableroBloqueado = false;
 }
 
-function tictac() {
-    estadoJuego.segundos = estadoJuego.segundos + 1;
-    actualizarTiempo(estadoJuego.segundos);
-}
-
-function iniciarTemporizador() {
-    if (estadoJuego.temporizadorIniciado === true) {
-        return;
-    }
-
-    estadoJuego.temporizadorIniciado = true;
-    estadoJuego.temporizador = window.setInterval(tictac, 1000);
-}
-
-function detenerTemporizador() {
-    if (estadoJuego.temporizador !== null) {
-        window.clearInterval(estadoJuego.temporizador);
-        estadoJuego.temporizador = null;
-    }
-}
-
-function calcularPuntajeParcial() {
-    var puntaje;
-
-    puntaje = (estadoJuego.paresEncontrados * PUNTOS_POR_PAR) +
-        estadoJuego.bonusRachaTotal -
-        estadoJuego.penalizacionErroresTotal;
-
-    if (puntaje < 0) {
-        return 0;
-    }
-
-    return puntaje;
-}
-
 function calcularPenalizacionTiempo() {
     return estadoJuego.segundos * PENALIZACION_POR_SEGUNDO;
 }
@@ -278,8 +287,26 @@ function calcularPuntajeFinal() {
     return puntaje;
 }
 
-function armarDatosVictoria() {
-    return {
+function finalizarPartida() {
+    var resultado;
+    var datosVictoria;
+
+    detenerTemporizador();
+    estadoJuego.puntaje = calcularPuntajeFinal();
+    actualizarMarcador(estadoJuego);
+
+    resultado = {
+        nombre: estadoJuego.nombreJugador,
+        puntaje: estadoJuego.puntaje,
+        nivel: estadoJuego.nivel,
+        intentos: estadoJuego.intentos,
+        errores: estadoJuego.errores,
+        marcaTiempo: Date.now(),
+        duracionSegundos: estadoJuego.segundos
+    };
+    guardarResultado(resultado);
+
+    datosVictoria = {
         nombreJugador: estadoJuego.nombreJugador,
         nivel: estadoJuego.nivel,
         segundos: estadoJuego.segundos,
@@ -292,33 +319,7 @@ function armarDatosVictoria() {
         penalizacionTiempo: calcularPenalizacionTiempo(),
         puntaje: estadoJuego.puntaje
     };
-}
 
-function finalizarPartida() {
-    detenerTemporizador();
-    estadoJuego.puntaje = calcularPuntajeFinal();
-    actualizarMarcador(estadoJuego);
-    guardarResultado(armarResultado());
     reproducirSonido('victoria');
-    mostrarModalVictoria(armarDatosVictoria());
-}
-
-function reiniciarPartida() {
-    detenerTemporizador();
-    reiniciarEstado(estadoJuego.nombreJugador, estadoJuego.nivel);
-    renderizarTablero(estadoJuego.cartas, estadoJuego.nivel);
-    actualizarMarcador(estadoJuego);
-    actualizarTiempo(0);
-}
-
-function armarResultado() {
-    return {
-        nombre: estadoJuego.nombreJugador,
-        puntaje: estadoJuego.puntaje,
-        nivel: estadoJuego.nivel,
-        intentos: estadoJuego.intentos,
-        errores: estadoJuego.errores,
-        marcaTiempo: Date.now(),
-        duracionSegundos: estadoJuego.segundos
-    };
+    mostrarModalVictoria(datosVictoria);
 }
