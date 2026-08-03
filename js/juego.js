@@ -1,6 +1,8 @@
 'use strict';
 
 var PUNTOS_POR_PAR = 100;
+var BONUS_RACHA = 20;
+var PENALIZACION_ERROR_EXTRA = 5;
 
 var PENALIZACION_ERROR = {
     facil: 10,
@@ -80,6 +82,10 @@ var estadoJuego = {
     errores: 0,
     paresEncontrados: 0,
     puntaje: 0,
+    rachaActual: 0,
+    erroresSeguidos: 0,
+    bonusRachaTotal: 0,
+    penalizacionErroresTotal: 0,
     segundos: 0,
     temporizador: null,
     temporizadorIniciado: false
@@ -97,6 +103,10 @@ function reiniciarEstado(nombre, nivel) {
     estadoJuego.errores = 0;
     estadoJuego.paresEncontrados = 0;
     estadoJuego.puntaje = 0;
+    estadoJuego.rachaActual = 0;
+    estadoJuego.erroresSeguidos = 0;
+    estadoJuego.bonusRachaTotal = 0;
+    estadoJuego.penalizacionErroresTotal = 0;
     estadoJuego.segundos = 0;
     estadoJuego.temporizadorIniciado = false;
 }
@@ -153,12 +163,22 @@ function verificarPar() {
 }
 
 function procesarAcierto() {
+    var bonus;
+
     estadoJuego.cartas[estadoJuego.primeraCarta].emparejada = true;
     estadoJuego.cartas[estadoJuego.segundaCarta].emparejada = true;
     marcarCorrecta(estadoJuego.primeraCarta);
     marcarCorrecta(estadoJuego.segundaCarta);
 
     estadoJuego.paresEncontrados = estadoJuego.paresEncontrados + 1;
+    estadoJuego.rachaActual = estadoJuego.rachaActual + 1;
+    estadoJuego.erroresSeguidos = 0;
+
+    if (estadoJuego.rachaActual >= 2) {
+        bonus = (estadoJuego.rachaActual - 1) * BONUS_RACHA;
+        estadoJuego.bonusRachaTotal = estadoJuego.bonusRachaTotal + bonus;
+    }
+
     estadoJuego.puntaje = calcularPuntajeParcial();
     estadoJuego.primeraCarta = null;
     estadoJuego.segundaCarta = null;
@@ -167,9 +187,20 @@ function procesarAcierto() {
 }
 
 function procesarError() {
+    var penalizacion;
+
     estadoJuego.errores = estadoJuego.errores + 1;
+    estadoJuego.rachaActual = 0;
+    estadoJuego.erroresSeguidos = estadoJuego.erroresSeguidos + 1;
+
+    penalizacion = PENALIZACION_ERROR[estadoJuego.nivel] +
+        ((estadoJuego.erroresSeguidos - 1) * PENALIZACION_ERROR_EXTRA);
+    estadoJuego.penalizacionErroresTotal = estadoJuego.penalizacionErroresTotal + penalizacion;
+
     marcarIncorrecta(estadoJuego.primeraCarta);
     marcarIncorrecta(estadoJuego.segundaCarta);
+
+    estadoJuego.puntaje = calcularPuntajeParcial();
     actualizarMarcador(estadoJuego);
 
     window.setTimeout(ocultarCartasNoCoincidentes, 900);
@@ -205,5 +236,15 @@ function detenerTemporizador() {
 }
 
 function calcularPuntajeParcial() {
-    return estadoJuego.paresEncontrados * PUNTOS_POR_PAR;
+    var puntaje;
+
+    puntaje = (estadoJuego.paresEncontrados * PUNTOS_POR_PAR) +
+        estadoJuego.bonusRachaTotal -
+        estadoJuego.penalizacionErroresTotal;
+
+    if (puntaje < 0) {
+        return 0;
+    }
+
+    return puntaje;
 }
