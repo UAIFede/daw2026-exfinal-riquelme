@@ -29,7 +29,7 @@ function guardarResultado(resultado) {
 
     lista = leerRanking();
     lista.push(resultado);
-    localStorage.setItem(CLAVE_RANKING, lista);
+    localStorage.setItem(CLAVE_RANKING, JSON.stringify(lista));
 }
 
 function borrarRanking() {
