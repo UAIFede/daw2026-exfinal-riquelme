@@ -26,6 +26,7 @@ body.tema-oscuro {
     --color-primario: #37b48f;
     --color-primario-oscuro: #2a8f72;
     --color-peligro: #e06c7c;
+    --color-exito: #4cc38a;
     --sombra: 0 0.25rem 0.75rem #00000059;
 }
 
@@ -311,5 +312,30 @@ h2 {
 .enlace-pie {
     color: var(--color-primario);
     text-decoration: underline;
+    font-weight: 600;
+}
+
+.formulario-contacto {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 32rem;
+    padding: 2rem;
+    background-color: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+.control-campo-area {
+    resize: vertical;
+    min-height: 6rem;
+}
+
+.exito-campo {
+    min-height: 1.1rem;
+    color: var(--color-exito);
+    font-size: 0.9rem;
     font-weight: 600;
 }
