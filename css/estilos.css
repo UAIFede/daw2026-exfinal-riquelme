@@ -699,3 +699,33 @@ body.tema-oscuro .icono-modal-mono {
     background-color: var(--color-peligro);
     color: #ffffff;
 }
+
+@media (max-width: 640px) {
+    .encabezado {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .selector-nivel {
+        flex-direction: column;
+    }
+
+    .item-marcador {
+        min-width: 4rem;
+        padding: 0.5rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .interior-carta {
+        transition: none;
+    }
+
+    .carta.es-incorrecta .cara-frente {
+        animation: none;
+    }
+
+    .caja-modal {
+        animation: none;
+    }
+}
