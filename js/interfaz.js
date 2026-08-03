@@ -2,13 +2,6 @@
 
 var elementos = {};
 var elementosCarta = [];
-var RUTA_IMAGENES = 'assets/imagenes/';
-var RUTA_ESCUDOS = RUTA_IMAGENES + 'equipos/';
-var IMAGEN_DORSO = RUTA_IMAGENES + 'pelota_carta.svg';
-var IMAGEN_TEMA_CLARO = RUTA_IMAGENES + 'sol.svg';
-var IMAGEN_TEMA_OSCURO = RUTA_IMAGENES + 'luna.svg';
-var IMAGEN_SONIDO_ACTIVO = RUTA_IMAGENES + 'sound-on.svg';
-var IMAGEN_SONIDO_INACTIVO = RUTA_IMAGENES + 'sound-off.svg';
 var sonidoActivo = true;
 
 var RUTA_SONIDOS = 'assets/sonidos/';
@@ -20,17 +13,25 @@ var SONIDOS = {
     victoria: new Audio(RUTA_SONIDOS + 'victoria.mp3')
 };
 
+var RUTA_IMAGENES = 'assets/imagenes/';
+var RUTA_ESCUDOS = RUTA_IMAGENES + 'equipos/';
+var IMAGEN_DORSO = RUTA_IMAGENES + 'pelota_carta.svg';
+var IMAGEN_TEMA_CLARO = RUTA_IMAGENES + 'sol.svg';
+var IMAGEN_TEMA_OSCURO = RUTA_IMAGENES + 'luna.svg';
+var IMAGEN_SONIDO_ACTIVO = RUTA_IMAGENES + 'sound-on.svg';
+var IMAGEN_SONIDO_INACTIVO = RUTA_IMAGENES + 'sound-off.svg';
+
 function inicializarInterfaz() {
     elementos.pantallaInicio = document.getElementById('pantalla-inicio');
     elementos.pantallaJuego = document.getElementById('pantalla-juego');
     elementos.tablero = document.getElementById('tablero');
     elementos.datoJugador = document.getElementById('dato-jugador');
+    elementos.datoTiempo = document.getElementById('dato-tiempo');
     elementos.datoPuntaje = document.getElementById('dato-puntaje');
     elementos.datoPares = document.getElementById('dato-pares');
     elementos.datoIntentos = document.getElementById('dato-intentos');
     elementos.datoErrores = document.getElementById('dato-errores');
     elementos.errorNombre = document.getElementById('error-nombre');
-    elementos.datoTiempo = document.getElementById('dato-tiempo');
     elementos.modalVictoria = document.getElementById('modal-victoria');
     elementos.resumenVictoria = document.getElementById('resumen-victoria');
     elementos.detallePuntaje = document.getElementById('detalle-puntaje');
@@ -38,14 +39,6 @@ function inicializarInterfaz() {
     elementos.rankingTabla = document.getElementById('ranking-tabla');
     elementos.modalConfirmacion = document.getElementById('modal-confirmacion');
     elementos.botonSonido = document.getElementById('boton-sonido');
-}
-
-function mostrarErrorNombre(mensaje) {
-    elementos.errorNombre.textContent = mensaje;
-}
-
-function limpiarErrorNombre() {
-    elementos.errorNombre.textContent = '';
 }
 
 function crearElementoCarta(carta, indice) {
@@ -103,11 +96,6 @@ function renderizarTablero(cartas, nivel) {
         elementos.tablero.appendChild(elementoCarta);
         elementosCarta.push(elementoCarta);
     }
-}
-
-function mostrarPantallaJuego() {
-    elementos.pantallaInicio.classList.add('oculto');
-    elementos.pantallaJuego.classList.remove('oculto');
 }
 
 function voltearCarta(indice, nombre) {
@@ -169,6 +157,18 @@ function rellenarDosDigitos(numero) {
     return '' + numero;
 }
 
+function formatearFecha(marcaTiempo) {
+    var fecha;
+
+    fecha = new Date(marcaTiempo);
+
+    return rellenarDosDigitos(fecha.getDate()) + '/' +
+        rellenarDosDigitos(fecha.getMonth() + 1) + '/' +
+        fecha.getFullYear() + ' ' +
+        rellenarDosDigitos(fecha.getHours()) + ':' +
+        rellenarDosDigitos(fecha.getMinutes());
+}
+
 function nombrarNivel(nivel) {
     if (nivel === 'facil') {
         return 'Fácil';
@@ -178,6 +178,24 @@ function nombrarNivel(nivel) {
     }
 
     return 'Difícil';
+}
+
+function mostrarPantallaJuego() {
+    elementos.pantallaInicio.classList.add('oculto');
+    elementos.pantallaJuego.classList.remove('oculto');
+}
+
+function mostrarPantallaInicio() {
+    elementos.pantallaJuego.classList.add('oculto');
+    elementos.pantallaInicio.classList.remove('oculto');
+}
+
+function mostrarErrorNombre(mensaje) {
+    elementos.errorNombre.textContent = mensaje;
+}
+
+function limpiarErrorNombre() {
+    elementos.errorNombre.textContent = '';
 }
 
 function crearFilaDetalle(etiqueta, valor, esTotal) {
@@ -223,23 +241,6 @@ function mostrarModalVictoria(datos) {
 
 function ocultarModalVictoria() {
     elementos.modalVictoria.classList.add('oculto');
-}
-
-function mostrarPantallaInicio() {
-    elementos.pantallaJuego.classList.add('oculto');
-    elementos.pantallaInicio.classList.remove('oculto');
-}
-
-function formatearFecha(marcaTiempo) {
-    var fecha;
-
-    fecha = new Date(marcaTiempo);
-
-    return rellenarDosDigitos(fecha.getDate()) + '/' +
-        rellenarDosDigitos(fecha.getMonth() + 1) + '/' +
-        fecha.getFullYear() + ' ' +
-        rellenarDosDigitos(fecha.getHours()) + ':' +
-        rellenarDosDigitos(fecha.getMinutes());
 }
 
 function comparadorPuntaje(a, b) {
@@ -386,18 +387,6 @@ function aplicarTema(tema) {
     }
 }
 
-function reproducirSonido(tipo) {
-    var sonido;
-
-    if (sonidoActivo === false) {
-        return;
-    }
-
-    sonido = SONIDOS[tipo];
-    sonido.currentTime = 0;
-    sonido.play();
-}
-
 function actualizarBotonSonido(activo) {
     var glifo;
 
@@ -412,4 +401,16 @@ function actualizarBotonSonido(activo) {
     } else {
         glifo.src = IMAGEN_SONIDO_INACTIVO;
     }
+}
+
+function reproducirSonido(tipo) {
+    var sonido;
+
+    if (sonidoActivo === false) {
+        return;
+    }
+
+    sonido = SONIDOS[tipo];
+    sonido.currentTime = 0;
+    sonido.play();
 }

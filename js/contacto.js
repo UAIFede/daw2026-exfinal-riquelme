@@ -1,6 +1,8 @@
 'use strict';
 
 var MAIL_DESTINO = 'contacto@memojuego.com';
+var IMAGEN_TEMA_CLARO = '../assets/imagenes/sol.svg';
+var IMAGEN_TEMA_OSCURO = '../assets/imagenes/luna.svg';
 var entradaNombre = null;
 var entradaMail = null;
 var entradaMensaje = null;
@@ -8,8 +10,6 @@ var errorNombre = null;
 var errorMail = null;
 var errorMensaje = null;
 var mensajeExito = null;
-var IMAGEN_TEMA_CLARO = '../assets/imagenes/sol.svg';
-var IMAGEN_TEMA_OSCURO = '../assets/imagenes/luna.svg';
 var botonTemaContacto = null;
 var temaActualContacto = 'claro';
 
@@ -28,6 +28,22 @@ function obtenerReferenciasContacto() {
     errorMensaje = document.getElementById('error-contacto-mensaje');
     mensajeExito = document.getElementById('exito-contacto');
     botonTemaContacto = document.getElementById('boton-tema');
+}
+
+function aplicarTemaContacto() {
+    var glifo;
+
+    if (leerPreferenciaTema() === 'oscuro') {
+        temaActualContacto = 'oscuro';
+        document.body.classList.add('tema-oscuro');
+    }
+
+    glifo = botonTemaContacto.querySelector('.icono-boton');
+    if (temaActualContacto === 'oscuro') {
+        glifo.src = IMAGEN_TEMA_CLARO;
+    } else {
+        glifo.src = IMAGEN_TEMA_OSCURO;
+    }
 }
 
 function conectarEventosContacto() {
@@ -92,22 +108,6 @@ function abrirClienteCorreo(nombre, mail, mensaje) {
     enlace = 'mailto:' + MAIL_DESTINO + '?subject=' + asunto + '&body=' + cuerpo;
 
     window.location.href = enlace;
-}
-
-function aplicarTemaContacto() {
-    var glifo;
-
-    if (leerPreferenciaTema() === 'oscuro') {
-        temaActualContacto = 'oscuro';
-        document.body.classList.add('tema-oscuro');
-    }
-
-    glifo = botonTemaContacto.querySelector('.icono-boton');
-    if (temaActualContacto === 'oscuro') {
-        glifo.src = IMAGEN_TEMA_CLARO;
-    } else {
-        glifo.src = IMAGEN_TEMA_OSCURO;
-    }
 }
 
 function manejarClickTemaContacto() {
