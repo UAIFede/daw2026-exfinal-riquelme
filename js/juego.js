@@ -59,3 +59,23 @@ function crearCartas(nivel) {
 
     return mezclarArreglo(cartas);
 }
+
+var estadoJuego = {
+    nombreJugador: '',
+    nivel: 'facil',
+    cartas: [],
+    totalPares: 0
+};
+
+function reiniciarEstado(nombre, nivel) {
+    estadoJuego.nombreJugador = nombre;
+    estadoJuego.nivel = nivel;
+    estadoJuego.totalPares = PARES_POR_NIVEL[nivel];
+    estadoJuego.cartas = crearCartas(nivel);
+}
+
+function iniciarPartida(nombre, nivel) {
+    reiniciarEstado(nombre, nivel);
+    renderizarTablero(estadoJuego.cartas, nivel);
+    mostrarPantallaJuego();
+}
