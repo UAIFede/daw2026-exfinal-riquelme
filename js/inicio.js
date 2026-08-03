@@ -17,6 +17,7 @@ function obtenerReferencias() {
 
 function conectarEventos() {
     document.getElementById('formulario-inicio').addEventListener('submit', manejarEnvioInicio);
+    document.getElementById('tablero').addEventListener('click', manejarClickTablero);
     selectorNivel.addEventListener('click', manejarClickNivel);
     entradaNombre.addEventListener('input', limpiarErrorNombre);
 }
@@ -58,6 +59,19 @@ function manejarClickNivel(evento) {
 
     opcion.classList.add('opcion-nivel-activa');
     opcion.setAttribute('aria-checked', 'true');
+}
+
+function manejarClickTablero(evento) {
+    var carta;
+    var indice;
+
+    carta = evento.target.closest('.carta');
+    if (carta === null) {
+        return;
+    }
+
+    indice = parseInt(carta.getAttribute('data-indice'), 10);
+    seleccionarCarta(indice);
 }
 
 document.addEventListener('DOMContentLoaded', iniciarAplicacion);

@@ -51,7 +51,7 @@ function crearCartas(nivel) {
     totalPares = PARES_POR_NIVEL[nivel];
     cartas = [];
 
-    for (indice = 0; indice <= totalPares; indice = indice + 1) {
+    for (indice = 0; indice < totalPares; indice = indice + 1) {
         simbolo = SIMBOLOS[indice];
         cartas.push({ archivo: simbolo.archivo, nombre: simbolo.nombre, parId: indice, emparejada: false });
         cartas.push({ archivo: simbolo.archivo, nombre: simbolo.nombre, parId: indice, emparejada: false });
@@ -64,7 +64,14 @@ var estadoJuego = {
     nombreJugador: '',
     nivel: 'facil',
     cartas: [],
-    totalPares: 0
+    totalPares: 0,
+    primeraCarta: null,
+    segundaCarta: null,
+    tableroBloqueado: false,
+    intentos: 0,
+    errores: 0,
+    paresEncontrados: 0,
+    puntaje: 0
 };
 
 function reiniciarEstado(nombre, nivel) {
@@ -72,10 +79,89 @@ function reiniciarEstado(nombre, nivel) {
     estadoJuego.nivel = nivel;
     estadoJuego.totalPares = PARES_POR_NIVEL[nivel];
     estadoJuego.cartas = crearCartas(nivel);
+    estadoJuego.primeraCarta = null;
+    estadoJuego.segundaCarta = null;
+    estadoJuego.tableroBloqueado = false;
+    estadoJuego.intentos = 0;
+    estadoJuego.errores = 0;
+    estadoJuego.paresEncontrados = 0;
+    estadoJuego.puntaje = 0;
 }
 
 function iniciarPartida(nombre, nivel) {
     reiniciarEstado(nombre, nivel);
     renderizarTablero(estadoJuego.cartas, nivel);
+    actualizarMarcador(estadoJuego);
     mostrarPantallaJuego();
+}
+
+function seleccionarCarta(indice) {
+    var carta;
+
+    if (estadoJuego.tableroBloqueado === true) {
+        return;
+    }
+
+    carta = estadoJuego.cartas[indice];
+    if (carta.emparejada === true) {
+        return;
+    }
+    if (indice === estadoJuego.primeraCarta) {
+        return;
+    }
+
+    voltearCarta(indice, carta.nombre);
+
+    if (estadoJuego.primeraCarta === null) {
+        estadoJuego.primeraCarta = indice;
+        return;
+    }
+
+    estadoJuego.segundaCarta = indice;
+    estadoJuego.intentos = estadoJuego.intentos + 1;
+    estadoJuego.tableroBloqueado = true;
+    verificarPar();
+}
+
+function verificarPar() {
+    var primera;
+    var segunda;
+
+    primera = estadoJuego.cartas[estadoJuego.primeraCarta];
+    segunda = estadoJuego.cartas[estadoJuego.segundaCarta];
+
+    if (primera.parId === segunda.parId) {
+        procesarAcierto();
+    } else {
+        procesarError();
+    }
+}
+
+function procesarAcierto() {
+    estadoJuego.cartas[estadoJuego.primeraCarta].emparejada = true;
+    estadoJuego.cartas[estadoJuego.segundaCarta].emparejada = true;
+    marcarCorrecta(estadoJuego.primeraCarta);
+    marcarCorrecta(estadoJuego.segundaCarta);
+
+    estadoJuego.paresEncontrados = estadoJuego.paresEncontrados + 1;
+    estadoJuego.primeraCarta = null;
+    estadoJuego.segundaCarta = null;
+    estadoJuego.tableroBloqueado = false;
+    actualizarMarcador(estadoJuego);
+}
+
+function procesarError() {
+    estadoJuego.errores = estadoJuego.errores + 1;
+    marcarIncorrecta(estadoJuego.primeraCarta);
+    marcarIncorrecta(estadoJuego.segundaCarta);
+    actualizarMarcador(estadoJuego);
+
+    window.setTimeout(ocultarCartasNoCoincidentes, 900);
+}
+
+function ocultarCartasNoCoincidentes() {
+    desvoltearCarta(estadoJuego.primeraCarta);
+    desvoltearCarta(estadoJuego.segundaCarta);
+    estadoJuego.primeraCarta = null;
+    estadoJuego.segundaCarta = null;
 }
