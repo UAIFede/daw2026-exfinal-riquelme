@@ -164,4 +164,5 @@ function ocultarCartasNoCoincidentes() {
     desvoltearCarta(estadoJuego.segundaCarta);
     estadoJuego.primeraCarta = null;
     estadoJuego.segundaCarta = null;
+    estadoJuego.tableroBloqueado = false;
 }
