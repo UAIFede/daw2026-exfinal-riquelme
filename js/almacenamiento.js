@@ -2,6 +2,7 @@
 
 var CLAVE_RANKING = 'memojuego-ranking';
 var CLAVE_TEMA = 'memojuego-tema';
+var CLAVE_SONIDO = 'memojuego-sonido';
 
 function leerRanking() {
     var crudo;
@@ -43,4 +44,12 @@ function leerPreferenciaTema() {
 
 function guardarPreferenciaTema(tema) {
     localStorage.setItem(CLAVE_TEMA, tema);
+}
+
+function leerPreferenciaSonido() {
+    return localStorage.getItem(CLAVE_SONIDO);
+}
+
+function guardarPreferenciaSonido(valor) {
+    localStorage.setItem(CLAVE_SONIDO, valor);
 }
