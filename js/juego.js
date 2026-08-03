@@ -3,6 +3,8 @@
 var PUNTOS_POR_PAR = 100;
 var BONUS_RACHA = 20;
 var PENALIZACION_ERROR_EXTRA = 5;
+var BONUS_FINALIZACION = 300;
+var PENALIZACION_POR_SEGUNDO = 1;
 
 var PENALIZACION_ERROR = {
     facil: 10,
@@ -184,6 +186,10 @@ function procesarAcierto() {
     estadoJuego.segundaCarta = null;
     estadoJuego.tableroBloqueado = false;
     actualizarMarcador(estadoJuego);
+
+    if (estadoJuego.paresEncontrados === estadoJuego.totalPares) {
+        finalizarPartida();
+    }
 }
 
 function procesarError() {
@@ -247,4 +253,54 @@ function calcularPuntajeParcial() {
     }
 
     return puntaje;
+}
+
+function calcularPenalizacionTiempo() {
+    return estadoJuego.segundos * PENALIZACION_POR_SEGUNDO;
+}
+
+function calcularPuntajeFinal() {
+    var puntaje;
+
+    puntaje = (estadoJuego.totalPares * PUNTOS_POR_PAR) +
+        estadoJuego.bonusRachaTotal +
+        BONUS_FINALIZACION -
+        estadoJuego.penalizacionErroresTotal -
+        calcularPenalizacionTiempo();
+
+    if (puntaje < 0) {
+        return 0;
+    }
+
+    return puntaje;
+}
+
+function armarDatosVictoria() {
+    return {
+        nombreJugador: estadoJuego.nombreJugador,
+        nivel: estadoJuego.nivel,
+        segundos: estadoJuego.segundos,
+        intentos: estadoJuego.intentos,
+        errores: estadoJuego.errores,
+        totalPares: estadoJuego.totalPares,
+        bonusRacha: estadoJuego.bonusRachaTotal,
+        bonusFinalizacion: BONUS_FINALIZACION,
+        penalizacionErrores: estadoJuego.penalizacionErroresTotal,
+        penalizacionTiempo: calcularPenalizacionTiempo(),
+        puntaje: estadoJuego.puntaje
+    };
+}
+
+function finalizarPartida() {
+    detenerTemporizador();
+    estadoJuego.puntaje = calcularPuntajeFinal();
+    actualizarMarcador(estadoJuego);
+    mostrarModalVictoria(armarDatosVictoria());
+}
+
+function reiniciarPartida() {
+    reiniciarEstado(estadoJuego.nombreJugador, estadoJuego.nivel);
+    renderizarTablero(estadoJuego.cartas, estadoJuego.nivel);
+    actualizarMarcador(estadoJuego);
+    actualizarTiempo(0);
 }

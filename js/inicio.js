@@ -18,6 +18,9 @@ function obtenerReferencias() {
 function conectarEventos() {
     document.getElementById('formulario-inicio').addEventListener('submit', manejarEnvioInicio);
     document.getElementById('tablero').addEventListener('click', manejarClickTablero);
+    document.getElementById('boton-jugar-otra').addEventListener('click', manejarClickJugarOtra);
+    document.getElementById('boton-reiniciar').addEventListener('click', manejarClickReiniciar);
+    document.getElementById('boton-nueva').addEventListener('click', manejarClickNueva);
     selectorNivel.addEventListener('click', manejarClickNivel);
     entradaNombre.addEventListener('input', limpiarErrorNombre);
 }
@@ -72,6 +75,20 @@ function manejarClickTablero(evento) {
 
     indice = parseInt(carta.getAttribute('data-indice'), 10);
     seleccionarCarta(indice);
+}
+
+function manejarClickJugarOtra() {
+    ocultarModalVictoria();
+    reiniciarPartida();
+}
+
+function manejarClickReiniciar() {
+    reiniciarPartida();
+}
+
+function manejarClickNueva() {
+    detenerTemporizador();
+    mostrarPantallaInicio();
 }
 
 document.addEventListener('DOMContentLoaded', iniciarAplicacion);

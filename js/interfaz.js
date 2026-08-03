@@ -17,6 +17,9 @@ function inicializarInterfaz() {
     elementos.datoErrores = document.getElementById('dato-errores');
     elementos.errorNombre = document.getElementById('error-nombre');
     elementos.datoTiempo = document.getElementById('dato-tiempo');
+    elementos.modalVictoria = document.getElementById('modal-victoria');
+    elementos.resumenVictoria = document.getElementById('resumen-victoria');
+    elementos.detallePuntaje = document.getElementById('detalle-puntaje');
 }
 
 function mostrarErrorNombre(mensaje) {
@@ -146,4 +149,65 @@ function rellenarDosDigitos(numero) {
     }
 
     return '' + numero;
+}
+
+function nombrarNivel(nivel) {
+    if (nivel === 'facil') {
+        return 'Fácil';
+    }
+    if (nivel === 'medio') {
+        return 'Medio';
+    }
+
+    return 'Difícil';
+}
+
+function crearFilaDetalle(etiqueta, valor, esTotal) {
+    var fila;
+    var nodoEtiqueta;
+    var nodoValor;
+
+    fila = document.createElement('div');
+    fila.className = 'fila-puntaje';
+    if (esTotal === true) {
+        fila.className = 'fila-puntaje fila-puntaje-total';
+    }
+
+    nodoEtiqueta = document.createElement('span');
+    nodoEtiqueta.textContent = etiqueta;
+
+    nodoValor = document.createElement('span');
+    nodoValor.textContent = valor;
+
+    fila.appendChild(nodoEtiqueta);
+    fila.appendChild(nodoValor);
+
+    return fila;
+}
+
+function mostrarModalVictoria(datos) {
+    elementos.resumenVictoria.textContent = '¡Muy bien, ' + datos.nombreJugador +
+        '! Completaste el nivel ' + nombrarNivel(datos.nivel) + '.';
+
+    elementos.detallePuntaje.textContent = '';
+    elementos.detallePuntaje.appendChild(crearFilaDetalle('Tiempo total', formatearTiempo(datos.segundos), false));
+    elementos.detallePuntaje.appendChild(crearFilaDetalle('Intentos', datos.intentos, false));
+    elementos.detallePuntaje.appendChild(crearFilaDetalle('Errores', datos.errores, false));
+    elementos.detallePuntaje.appendChild(crearFilaDetalle('Pares (' + datos.totalPares + ' x 100)', '+' + (datos.totalPares * 100), false));
+    elementos.detallePuntaje.appendChild(crearFilaDetalle('Bonus por racha', '+' + datos.bonusRacha, false));
+    elementos.detallePuntaje.appendChild(crearFilaDetalle('Bonus por finalizar', '+' + datos.bonusFinalizacion, false));
+    elementos.detallePuntaje.appendChild(crearFilaDetalle('Penalización por errores', '-' + datos.penalizacionErrores, false));
+    elementos.detallePuntaje.appendChild(crearFilaDetalle('Penalización por tiempo', '-' + datos.penalizacionTiempo, false));
+    elementos.detallePuntaje.appendChild(crearFilaDetalle('Puntaje final', datos.puntaje, true));
+
+    elementos.modalVictoria.classList.remove('oculto');
+}
+
+function ocultarModalVictoria() {
+    elementos.modalVictoria.classList.add('oculto');
+}
+
+function mostrarPantallaInicio() {
+    elementos.pantallaJuego.classList.add('oculto');
+    elementos.pantallaInicio.classList.remove('oculto');
 }
